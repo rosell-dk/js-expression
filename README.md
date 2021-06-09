@@ -42,6 +42,7 @@ The library contains three engines, each in a class of its own, and a class pull
 Converts a string to tokens. A token consists of type information and value.
 
 **Examples:**
+| In      | Out               |
 | ------- | ----------------- |
 | 7       | [LITERAL, 7]      |
 | +       | [INFIX_OP, "+"]   |
