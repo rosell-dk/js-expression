@@ -12,6 +12,18 @@ let e = new Expression('(1+1)*3');
 let result = e.evaluate();   // evaluates to 6
 ```
 
+Variables can be injected like this:
+
+```javascript
+let e = new Expression('shoeSize + 2');
+e.setVariable('shoeSize', 10);
+let result = e.evaluate();   // evaluates to 12
+
+// Changing a variable does not trigger reparsing, just reevaluation:
+e.setVariable('shoeSize', 12);
+newResult = e.evaluate();    // now evaluates to 12
+```
+
 Functions can be added like this:
 
 ```javascript
@@ -24,7 +36,6 @@ let result = e.evaluate();   // evaluates to 6
 ',', '??', '||', '&&', '|', '^', '&', '==', '!=', '===', '<', '>', '<=', '>=', '>>', '<<', '>>>', '+', '-', '*', '/', '%', '**', '!', '~'
 
 ## Unsupported (working on it)
-- Accessing variables passed to evaluator
 - Unary plus and minus, ie "-7" (**BEWARE**)
 - Ternary operator '?'
 - Member access, ie `obj.firstName`
@@ -80,4 +91,4 @@ Note: actual input must be array of tokens, not array of string, as the example 
 
 
 ### Expression
-Pulls it all together. It takes care of parsing before evaluating and makes sure not to parse again upon subsequent evaluations (when variables are supported, it will not be necessary to do a reparse in order to reevaluate with new values)
+Pulls it all together. It takes care of parsing before evaluating and makes sure not to parse again upon subsequent evaluations.

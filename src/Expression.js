@@ -33,7 +33,7 @@ export class Expression {
     this.extra.functions = functions;
   }
 
-  addVariable(varName, value) {
+  setVariable(varName, value) {
     this.extra.variables[varName] = value;
   }
 

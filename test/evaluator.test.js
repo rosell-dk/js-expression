@@ -99,3 +99,27 @@ describe('Custom functions (passed in second argument)', () => {
     });
   });
 });
+
+describe('Custom variables', () => {
+
+  let variables = {
+    'imageType': 'png',
+  }
+
+  let tests = [
+    ['imageType', 'png'],
+  ];
+
+  tests.forEach(arr => {
+    let s = arr[0];
+    let expectedResult = arr[1];
+
+    let tokens = Tokenizer.tokenize(s);
+    let tokensRpn = Parser.parse(tokens);
+    let result = Evaluator.evaluate(tokensRpn, {'variables':variables});
+
+    it(s + ' => ' + JSON.stringify(expectedResult), () => {
+      assert.deepEqual(result, expectedResult);
+    });
+  });
+});

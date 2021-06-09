@@ -1,4 +1,4 @@
-import { Tokenizer, LITERAL, FUNCTION_CALL_NO_ARGS }  from './Tokenizer.js'
+import { Tokenizer, LITERAL, FUNCTION_CALL_NO_ARGS, VARIABLE }  from './Tokenizer.js'
 
 export class Evaluator {
 
@@ -49,14 +49,16 @@ export class Evaluator {
 
   /**
    *
-   *
+   * @param object extra  Supported keys: "functions" (obj) and "variables" (obj)
    */
-  static evaluate(rpnTokens, extra = {'functions': {}, 'variables': {}}) {
+  static evaluate(rpnTokens, extra = {}) {
     let functions = {}
     Object.assign(functions, Evaluator.functions);
-    Object.assign(functions, extra.functions);
+    if (extra.hasOwnProperty('functions')) {
+      Object.assign(functions, extra.functions);
+    }
 
-    let variables = extra.variables;
+    let variables = (extra.hasOwnProperty('variables') ? extra.variables : {});
 
     //console.log('evaluateRpn', rpnTokens);
     //console.log('evaluateRpn', rpnTokens.map(function(a) {return a[1]}));
@@ -79,6 +81,12 @@ export class Evaluator {
         let result = Evaluator.ops[tokenValue](a);
         stack.push(result);
         //console.log('Performed prefix op:', a, tokenValue, 'result:', result, 'stack:', stack);
+      } else if (token[0] == VARIABLE) {
+        let variableName = token[1];
+        if (!variables.hasOwnProperty(variableName)) {
+          throw new Error('Variable is not defined: ' + variableName);
+        }
+        stack.push(variables[variableName]);
       } else if (Tokenizer.isFunctionCall(token)) {
         let functionName = token[1];
         if (!functions.hasOwnProperty(functionName)) {
