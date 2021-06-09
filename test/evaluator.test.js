@@ -39,7 +39,7 @@ describe('Basic evaluation', () => {
     let expectedResult = arr[1];
 
     let tokens = Tokenizer.tokenize(s);
-    let tokensRpn = Parser.parseTokens(tokens);
+    let tokensRpn = Parser.parse(tokens);
     let result = Evaluator.evaluate(tokensRpn);
 
     it(s + ' => ' + JSON.stringify(expectedResult), () => {
@@ -68,7 +68,7 @@ describe('Custom functions', () => {
     let expectedResult = arr[1];
 
     let tokens = Tokenizer.tokenize(s);
-    let tokensRpn = Parser.parseTokens(tokens);
+    let tokensRpn = Parser.parse(tokens);
     let result = Evaluator.evaluate(tokensRpn);
 
     it(s + ' => ' + JSON.stringify(expectedResult), () => {

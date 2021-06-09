@@ -68,7 +68,7 @@ export class Parser {
    *  Parenthesis are dissolved in the process
    *
    */
-  static parseTokens(tokens) {
+  static parse(tokens) {
     Parser.createPrecendenceHash();
 
     let tokensMoved = [];

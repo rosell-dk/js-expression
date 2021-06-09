@@ -23,7 +23,7 @@ describe('Parsing into Rpn', () => {
     let expectedTokenValues = arr[1];
 
     let tokens = Tokenizer.tokenize(s);
-    let tokensRpn = Parser.parseTokens(tokens);
+    let tokensRpn = Parser.parse(tokens);
     let tokenValuesRpn = tokensRpn.map(function(a) {return a[1]});
 
     it(s + ' => ' + JSON.stringify(expectedTokenValues), () => {
