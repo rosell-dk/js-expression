@@ -21,18 +21,19 @@ let result = e.evaluate();   // evaluates to 6
 ',', '??', '||', '&&', '|', '^', '&', '==', '!=', '===', '<', '>', '<=', '>=', '>>', '<<', '>>>', '+', '-', '*', '/', '%', '**', '!', '~'
 
 ## Unsupported (working on it)
-- Accessing variables passed
-- Unary plus and minus, ie "-7" (BEWARE)
+- Accessing variables passed to evaluator
+- Unary plus and minus, ie "-7" (**BEWARE**)
 - Ternary operator '?'
 - Member access, ie `obj.firstName`
 - Computed member access, ie `obj['firstName']`
 - Object constructors, ie {firstName: 'Bjørn'}
 - Array constructors, ie [1,2]
 
-## Unsupported (not going to work at it)
-- Optional chaining [?.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
-- new
+## Unsupported features (I am intendendly not going to implement these)
 - operators that makes assignments (++, --, =, etc)
+- function constructors
+- new keyword
+- Optional chaining [?.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
 - yield
 
 ## How it works
