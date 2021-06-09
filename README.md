@@ -36,7 +36,7 @@ let result = e.evaluate();   // evaluates to 6
 ',', '??', '||', '&&', '|', '^', '&', '==', '!=', '===', '<', '>', '<=', '>=', '>>', '<<', '>>>', '+', '-', '*', '/', '%', '**', '!', '~'
 
 ## Unsupported (working on it)
-- Unary plus and minus, ie "-7" (Actually, it has just been implemented, but it has not been tested thoroughly yet)
+- Unary plus and minus, ie "-7" (Actually, it has just been implemented, but it has not been tested thoroughly yet, see #1)
 - Ternary operator '?'
 - Member access, ie `obj.firstName`
 - Computed member access, ie `obj['firstName']`
@@ -73,10 +73,16 @@ The parser parses tokens into a rpn list ([reverse polish notation](https://en.w
 | ------- | ------------------- |
 | 7+1     | [7, 1, '+']         |
 | 1+2*3   | [1, 2, 3, '*', '+'] |
-| (1+2)*3 | [1, 2, +, '3', '*'] |
+| (1+2)*3 | [1, 2, +, 3, '*']   |
+| (1+2)*3 | [1, 2, +, 3, '*']   |
+| -7*3    | [7, '+/-', 3, '*']  |
+| 1+(-7)  | [1, 7, '+/-', '+']  |
 
 Note 1: Actual input must be array of tokens, not a string. For example [[LITERAL, 7], [INFIX_OP, "+"], [LITERAL, 1]] rather than "7+1"  
 Note 2: Actual output is array of tokens, not array of string.
+
+The parser also gets rid of parenthesis. And it also handles unary minus and plus, which it transposes to "+/-" and "+/+", see above.
+
 
 
 ### Evaluator

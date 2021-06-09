@@ -19,6 +19,7 @@ describe('Parsing into Rpn', () => {
     ['-7*1', [7, '+/-', '1', '*']],     // unary minus (first)
     ['+2*3', [2, '+/+', '3', '*']],     // unary plus
     ['2+(-7*3)', [2, 7, '+/-', '3', '*', '+']],     // unary minus (first after paren)
+    ['1+(-7)', [1, 7, '+/-', '+']],
     ['!true', [true, '!']],
   ];
 
