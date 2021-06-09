@@ -41,30 +41,39 @@ The library contains three engines, each in a class of its own, and a class pull
 ### Tokenizer
 Converts a string to tokens. A token consists of type information and value.
 
-**Examples:**
-| In      | Out                 |
-| ------- | ------------------- |
-| 7       | `[LITERAL, 7]`      |
-| +       | `[INFIX_OP, "+"]`   |
-| !       | `[PREFIX_OP, "!"]`  |
+*Examples:*
+
+| in      | out               |
+| ------- | ----------------- |
+| 7       | [LITERAL, 7]      |
+| +       | [INFIX_OP, "+"]   |
+| !       | [PREFIX_OP, "!"]  |
 
 ### Parser
 The parser parses tokens into a rpn list ([reverse polish notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation)). Such a list is very suited for being evaluated.
 
-**Examples:** (not showing the token types for simplicity)
-```
-7+1 => `[7, 1, '+']
-1+2*3` => `[1, 2, 3, '*', '+']
-(1+2)*3` => `[1, 2, +, '3', '*']
-```
+*Examples:* (not showing the token types for simplicity)
+
+| in      | out                 |
+| ------- | ------------------- |
+| 7+1     | [7, 1, '+']         |
+| 1+2*3   | [1, 2, 3, '*', '+'] |
+| (1+2)*3 | [1, 2, +, '3', '*'] |
+
+Note 1: actual input is tokens, not a string. For example it is [[LITERAL, 7], [INFIX_OP, "+"], [LITERAL, 1]] rather than "7+1"
+Note 2: actual output is array of tokens, not array of string.
+
 
 ### Evaluator
 The evaluator evaluates the tokens and operators in the rpn list.
 
-**Examples:**
-```
-[7, 1, '+'] => 8
-```
+*Examples:* (again, for simplicity, not showing token types)
+| in           | out                 |
+| ------------ | ------------------- |
+| [7, 1, '+']  | 8                   |
+
+Note: actual input must be array of tokens, not array of string, as the example could lead you to think
+
 
 ### Expression
 Pulls it all together. It takes care of parsing before evaluating and makes sure not to parse again upon subsequent evaluations (when variables are supported, it will not be necessary to do a reparse in order to reevaluate with new values)
