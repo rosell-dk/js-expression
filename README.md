@@ -75,7 +75,7 @@ The parser parses tokens into a rpn list ([reverse polish notation](https://en.w
 | 1+2*3   | [1, 2, 3, '*', '+'] |
 | (1+2)*3 | [1, 2, +, '3', '*'] |
 
-Note 1: actual input is tokens, not a string. For example it is [[LITERAL, 7], [INFIX_OP, "+"], [LITERAL, 1]] rather than "7+1"
+Note 1: actual input is tokens, not a string. For example it is [[LITERAL, 7], [INFIX_OP, "+"], [LITERAL, 1]] rather than "7+1"\\
 Note 2: actual output is array of tokens, not array of string.
 
 
