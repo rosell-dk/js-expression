@@ -18,7 +18,7 @@ export class Parser {
     ['+', '-'],
     ['*', '/', '%'],
     '**',
-    ['!', '~', '+/-', '+/+']  // todo: unary negation and unary plus
+    ['!', '~', '+/-', '+/+']
   ];
 
   static getPrecedence(token) {
@@ -34,7 +34,8 @@ export class Parser {
   static rightAssociative = [
     '?',
     '**',
-    '!', '~'
+    '!', '~',
+    '+/-', '+/+'
   ];
 
   static isRightAssociative(token) {
@@ -74,7 +75,19 @@ export class Parser {
     let tokensMoved = [];
     let iterations = 0;
 
-    let prevToken = null;
+    let token;
+
+    // Transform unary plus/minus
+    for (let pointer=0; pointer<tokens.length; pointer++) {
+      token = tokens[pointer];
+      let prevToken = (pointer==0 ? null : tokens[pointer-1]);
+      if ((token[1] == '-') || (token[1] == '+')) {
+        if ((prevToken == null) || (prevToken[1] == '(') || (prevToken[1] == ',') || (prevToken[1] == '+/-') || (prevToken[1] == '+/+')) {
+          token[0] = PREFIX_OP;
+          token[1] = '+/' + token[1];
+        }
+      }
+    }
 
     loop1:
     for (let pointer=0; pointer<tokens.length; pointer++) {
@@ -89,17 +102,8 @@ export class Parser {
       // Move operators right. [1,'+',2] => [1, 2, '+']'
       if (Tokenizer.isOperatorOrFunctionCall(token)) {
 
-        if ((token[1] == '-') || (token[1] == '+')) {
-          // Take care of unary plus/minus (#1)
-          if ((prevToken == null) || (prevToken[1] == '(') || (prevToken[1] == ',')) {
-            token[0] = PREFIX_OP;
-            token[1] = '+/' + token[1];
-          }
-        }
-
-        let precedence = Parser.getPrecedence(token, prevToken);
+        let precedence = Parser.getPrecedence(token);
         let delta = 0;
-        let nextToken = '';
 
         // - Do not move past operators with lower precedence, but move past operators
         //     with highter precendence.
@@ -118,7 +122,7 @@ export class Parser {
 
         loop2:
         for (delta=0; (pointer+delta)<tokens.length-1; delta++) {
-          nextToken = tokens[pointer+delta+1];
+          let nextToken = tokens[pointer+delta+1];
           //console.log('examining:', nextToken, 'parenDepth:', parenDepth);
           if (nextToken[1] == ')') {
             parenDepth--;
@@ -140,12 +144,6 @@ export class Parser {
             break;
           }
 
-          /*if (!Tokenizer.isOperatorOrFunctionCall(nextToken)) {
-            continue;
-          }*/
-          /*if (Tokenizer.isOperatorOrFunctionCall(nextToken)) {
-
-          }*/
           let precendenceNext = Parser.getPrecedence(nextToken, tokens[pointer+delta]);
 
           //console.log('precedences:', precedence, precendenceNext)
@@ -182,7 +180,6 @@ export class Parser {
           pointer--;
         }
       }
-      prevToken = token;
     }
 
     // remove paren

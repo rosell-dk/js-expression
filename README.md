@@ -36,7 +36,7 @@ let result = e.evaluate();   // evaluates to 6
 ',', '??', '||', '&&', '|', '^', '&', '==', '!=', '===', '<', '>', '<=', '>=', '>>', '<<', '>>>', '+', '-', '*', '/', '%', '**', '!', '~'
 
 ## Unsupported (working on it)
-- Unary plus and minus, ie "-7" (Actually, it has just been implemented, but some cases are failing, ie "- -1" #1)
+- Unary plus and minus, ie "-7" (Actually, it has just been implemented, but it is not tested thoroughly yet (see #1)
 - Ternary operator '?'
 - Member access, ie `obj.firstName`
 - Computed member access, ie `obj['firstName']`

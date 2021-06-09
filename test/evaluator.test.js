@@ -34,7 +34,8 @@ describe('Basic evaluation', () => {
     ['1,2,3', [1,2,3]],
     ['-2*3', -6],
     ['+2*3', 6],
-    ['2+(-7*3)', -19]
+    ['2+(-7*3)', -19],
+    ['~!false', -2],   // both are right associative. ~!false => ~true => -2
   ];
 
   tests.forEach(arr => {
