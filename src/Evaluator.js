@@ -42,6 +42,7 @@ export class Evaluator {
     'inArray': (arr, value) => b.inArray(a),
   }
 
+  // Add function "permanently".
   static addFunction(functionName, f) {
     Evaluator.functions[functionName] = f;
   }
@@ -50,10 +51,12 @@ export class Evaluator {
    *
    *
    */
-  static evaluate(rpnTokens, customFunctions = {}) {
+  static evaluate(rpnTokens, extra = {'functions': {}, 'variables': {}}) {
     let functions = {}
     Object.assign(functions, Evaluator.functions);
-    Object.assign(functions, customFunctions);
+    Object.assign(functions, extra.functions);
+
+    let variables = extra.variables;
 
     //console.log('evaluateRpn', rpnTokens);
     //console.log('evaluateRpn', rpnTokens.map(function(a) {return a[1]}));

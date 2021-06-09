@@ -48,7 +48,7 @@ describe('Basic evaluation', () => {
   });
 });
 
-describe('Custom functions', () => {
+describe('Custom functions ("permanent" functions)', () => {
 
   Evaluator.addFunction('equals', (a, b) => (a==b));
   Evaluator.addFunction('double', (a) => a*2);
@@ -70,6 +70,29 @@ describe('Custom functions', () => {
     let tokens = Tokenizer.tokenize(s);
     let tokensRpn = Parser.parse(tokens);
     let result = Evaluator.evaluate(tokensRpn);
+
+    it(s + ' => ' + JSON.stringify(expectedResult), () => {
+      assert.deepEqual(result, expectedResult);
+    });
+  });
+});
+
+describe('Custom functions (passed in second argument)', () => {
+
+  let functions = {
+    'hello': () => 'world'
+  }
+  let tests = [
+    ['hello()', 'world'],
+  ];
+
+  tests.forEach(arr => {
+    let s = arr[0];
+    let expectedResult = arr[1];
+
+    let tokens = Tokenizer.tokenize(s);
+    let tokensRpn = Parser.parse(tokens);
+    let result = Evaluator.evaluate(tokensRpn, {'functions':functions});
 
     it(s + ' => ' + JSON.stringify(expectedResult), () => {
       assert.deepEqual(result, expectedResult);

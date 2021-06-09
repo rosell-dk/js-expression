@@ -7,7 +7,11 @@ export class Expression {
     this.tokens = null;
     this.rpn = null;
     this.expression = expression;
-    this.functions = {}
+    this.extra = {
+      'functions': {},
+      'variables': {}
+    }
+
   }
 
   tokenize() {
@@ -22,18 +26,27 @@ export class Expression {
   }
 
   addFunction(fname, fn) {
-    this.functions[fname] = fn;
+    this.extra.functions[fname] = fn;
   }
 
   setFunctions(functions) {
-    this.functions = functions;
+    this.extra.functions = functions;
   }
+
+  addVariable(varName, value) {
+    this.extra.variables[varName] = value;
+  }
+
+  setVariables(variables) {
+    this.extra.variables = variables;
+  }
+
 
   evaluate() {
     if (this.rpn == null) {
       this.parse();
     }
-    return Evaluator.evaluate(this.rpn, this.functions);
+    return Evaluator.evaluate(this.rpn, this.extra);
   }
 
 }
