@@ -173,4 +173,8 @@ export class Tokenizer {
     return Tokenizer.isOperator(token) || Tokenizer.isFunctionCall(token);
   }
 
+  static isLiteral(token) {
+    return (token[0] == LITERAL)
+  }
+
 }
