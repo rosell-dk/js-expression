@@ -16,6 +16,10 @@ describe('Parsing into Rpn', () => {
     ['7+doit(8)', [7, 8, 'doit', '+']],
     ['7+doit()', [7, 'doit', '+']],
     ['doit(1,2)', [1, 2, ',', 'doit']],
+    ['-7*1', [7, '+/-', '1', '*']],     // unary minus (first)
+    ['+2*3', [2, '+/+', '3', '*']],     // unary plus
+    ['2+(-7*3)', [2, 7, '+/-', '3', '*', '+']],     // unary minus (first after paren)
+    ['!true', [true, '!']],
   ];
 
   tests.forEach(arr => {

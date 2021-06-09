@@ -36,6 +36,8 @@ export class Evaluator {
     '**': (a, b) => a ** b,
     '!': (a) => !a,
     '~': (a) => ~a,
+    '+/-': (a) => -a,
+    '+/+': (a) => a,
   };
 
   static functions = {
