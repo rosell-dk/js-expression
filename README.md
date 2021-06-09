@@ -30,7 +30,7 @@ let result = e.evaluate();   // evaluates to 6
 - Array constructors, ie [1,2]
 
 ## Unsupported (not going to work at it)
-- [?. - Optional chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
+- Optional chaining [?.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
 - new
 - operators that makes assignments (++, --, =, etc)
 - yield
@@ -38,27 +38,27 @@ let result = e.evaluate();   // evaluates to 6
 ## How it works
 The library contains three engines, each in a class of its own, and a class pulling it together for convenience.
 
-*Tokenizer*
+### Tokenizer
 Converts a string to tokens. A token consists of type information and value.
 
-Examples:
-"7" => [LITERAL, 7]
-"+" => [INFIX_OP, "+"]
-"!" => [PREFIX_OP, "!"]
+Examples:\
+"7" => [LITERAL, 7]\
+"+" => [INFIX_OP, "+"]\
+"!" => [PREFIX_OP, "!"]\
 
-*Parser*
+### Parser
 The parser parses tokens into a rpn list ([reverse polish notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation)). Such a list is very suited for being evaluated.
 
 Examples: (not showing the token types for simplicity)
-`7+1` => `[7, 1, '+']`
-`1+2*3` => `[1, 2, 3, '*', '+']`
-`(1+2)*3` => `[1, 2, +, '3', '*']`
+`7+1` => `[7, 1, '+']`\
+`1+2*3` => `[1, 2, 3, '*', '+']`\
+`(1+2)*3` => `[1, 2, +, '3', '*']`\
 
-*Evaluator*
+### Evaluator
 The evaluator evaluates the tokens and operators in the rpn list.
 
-Examples:
+Examples:\
 `[7, 1, '+']` => 8
 
-*Expression*
+### Expression
 Pulls it all together. It takes care of parsing before evaluating and makes sure not to parse again upon subsequent evaluations (when variables are supported, it will not be necessary to do a reparse in order to reevaluate with new values)
