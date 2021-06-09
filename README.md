@@ -2,7 +2,7 @@
 
 This library allows you to tokenize, parse and evaluate javascript expressions. No eval()!
 
-*Although the library is functional, it is not ready for production*. But cheer up. I got this far in just one one week and I'm eager to finish it!
+*Although the library is functional, it is not ready for production*. But cheer up. I got this far in less than a week and I'm eager to finish it!
 
 
 ## Usage:
