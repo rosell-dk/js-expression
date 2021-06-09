@@ -42,11 +42,11 @@ The library contains three engines, each in a class of its own, and a class pull
 Converts a string to tokens. A token consists of type information and value.
 
 **Examples:**
-| In      | Out               |
-| ------- | ----------------- |
-| 7       | [LITERAL, 7]      |
-| +       | [INFIX_OP, "+"]   |
-| !       | [PREFIX_OP, "!"]  |
+| In      | Out                 |
+| ------- | ------------------- |
+| 7       | `[LITERAL, 7]`      |
+| +       | `[INFIX_OP, "+"]`   |
+| !       | `[PREFIX_OP, "!"]`  |
 
 ### Parser
 The parser parses tokens into a rpn list ([reverse polish notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation)). Such a list is very suited for being evaluated.
