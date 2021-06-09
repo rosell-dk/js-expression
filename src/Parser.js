@@ -29,7 +29,7 @@ export class Parser {
       if ((token[1] == '-') || (token[1] == '+')) {
 
         // Take care of unary minus (#1)
-        if ((tokenBefore == null) || (tokenBefore[1] == '(')) {
+        if ((tokenBefore == null) || (tokenBefore[1] == '(') || (tokenBefore[1] == ',')) {
           token[0] = PREFIX_OP;
           token[1] = '+/' + token[1];
         }
