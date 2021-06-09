@@ -21,19 +21,10 @@ export class Parser {
     ['!', '~', '+/-', '+/+']  // todo: unary negation and unary plus
   ];
 
-  static getPrecedence(token, tokenBefore) {
+  static getPrecedence(token) {
     if (Tokenizer.isFunctionCall(token)) {
       return 100;
     } else if (Tokenizer.isOperator(token)) {
-
-      if ((token[1] == '-') || (token[1] == '+')) {
-
-        // Take care of unary minus (#1)
-        if ((tokenBefore == null) || (tokenBefore[1] == '(') || (tokenBefore[1] == ',')) {
-          token[0] = PREFIX_OP;
-          token[1] = '+/' + token[1];
-        }
-      }
       return Parser.precendenceHash[token[1]] + 1;
     } else if (Tokenizer.isLiteral(token)) {
       return 100;
@@ -97,6 +88,15 @@ export class Parser {
 
       // Move operators right. [1,'+',2] => [1, 2, '+']'
       if (Tokenizer.isOperatorOrFunctionCall(token)) {
+
+        if ((token[1] == '-') || (token[1] == '+')) {
+          // Take care of unary plus/minus (#1)
+          if ((prevToken == null) || (prevToken[1] == '(') || (prevToken[1] == ',')) {
+            token[0] = PREFIX_OP;
+            token[1] = '+/' + token[1];
+          }
+        }
+
         let precedence = Parser.getPrecedence(token, prevToken);
         let delta = 0;
         let nextToken = '';
