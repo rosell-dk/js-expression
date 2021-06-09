@@ -41,24 +41,30 @@ The library contains three engines, each in a class of its own, and a class pull
 ### Tokenizer
 Converts a string to tokens. A token consists of type information and value.
 
-Examples:\
-"7" => [LITERAL, 7]\
-"+" => [INFIX_OP, "+"]\
-"!" => [PREFIX_OP, "!"]\
+**Examples:**
+```
+"7" => [LITERAL, 7]
+"+" => [INFIX_OP, "+"]
+"!" => [PREFIX_OP, "!"]
+```
 
 ### Parser
 The parser parses tokens into a rpn list ([reverse polish notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation)). Such a list is very suited for being evaluated.
 
-Examples: (not showing the token types for simplicity)
-`7+1` => `[7, 1, '+']`\
-`1+2*3` => `[1, 2, 3, '*', '+']`\
-`(1+2)*3` => `[1, 2, +, '3', '*']`\
+**Examples:** (not showing the token types for simplicity)
+```
+7+1 => `[7, 1, '+']
+1+2*3` => `[1, 2, 3, '*', '+']
+(1+2)*3` => `[1, 2, +, '3', '*']
+```
 
 ### Evaluator
 The evaluator evaluates the tokens and operators in the rpn list.
 
-Examples:\
-`[7, 1, '+']` => 8
+**Examples:**
+```
+[7, 1, '+'] => 8
+```
 
 ### Expression
 Pulls it all together. It takes care of parsing before evaluating and makes sure not to parse again upon subsequent evaluations (when variables are supported, it will not be necessary to do a reparse in order to reevaluate with new values)
