@@ -8,7 +8,7 @@ export class Evaluator {
         a.push(b);
         return a;
       } else {
-        return [a,b];
+        return [a,b];   // TODO: Custom class instead (ie "List")
       }
     },
     '??': (a, b) => a ?? b,
@@ -50,7 +50,11 @@ export class Evaluator {
    *
    *
    */
-  static evaluate(rpnTokens) {
+  static evaluate(rpnTokens, customFunctions = {}) {
+    let functions = {}
+    Object.assign(functions, Evaluator.functions);
+    Object.assign(functions, customFunctions);
+
     //console.log('evaluateRpn', rpnTokens);
     //console.log('evaluateRpn', rpnTokens.map(function(a) {return a[1]}));
     let stack = [];
@@ -74,8 +78,11 @@ export class Evaluator {
         //console.log('Performed prefix op:', a, tokenValue, 'result:', result, 'stack:', stack);
       } else if (Tokenizer.isFunctionCall(token)) {
         let functionName = token[1];
+        if (!functions.hasOwnProperty(functionName)) {
+          throw new Error('Function does not exist: ' + functionName);
+        }
         if (token[0] == FUNCTION_CALL_NO_ARGS) {
-          stack.push(Evaluator.functions[functionName]());
+          stack.push(functions[functionName]());
         } else {
           let popped = stack.pop();
           let arr = [];
@@ -84,7 +91,7 @@ export class Evaluator {
           } else {
             arr.push(popped);
           }
-          stack.push(Evaluator.functions[functionName](... arr));
+          stack.push(functions[functionName](... arr));
 
         }
       }
