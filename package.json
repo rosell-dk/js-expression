@@ -1,0 +1,27 @@
+{
+  "name": "js-expression",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rosell-dk/js-expression.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rosell-dk/js-expression/issues"
+  },
+  "homepage": "https://github.com/rosell-dk/js-expression#readme",
+  "devDependencies": {
+    "mocha": "^9.0.0"
+  }
+}
