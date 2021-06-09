@@ -64,6 +64,8 @@ describe('Misc', () => {
     ['7*4', [[LITERAL,7],[INFIX_OP, '*'],[LITERAL, 4]]],
     ['7&&&4', [[LITERAL,7],[INFIX_OP, '&&'],[INFIX_OP, '&'],[LITERAL, 4]]],
     ['doit(3)', [[FUNCTION_CALL,'doit'],[LEFT_PAREN,'('],[LITERAL,3],[RIGHT_PAREN, ')']]],
+    ['- +1', [[INFIX_OP, '-'],[INFIX_OP, '+'], [LITERAL, 1]]],    // Notice that "INFIX_OP" is not quite right...
+
   ];
 
   miscTests.forEach(arr => {

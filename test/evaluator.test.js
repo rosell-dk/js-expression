@@ -68,6 +68,7 @@ describe('Custom functions ("permanent" functions)', () => {
     ['7+seven()', 14],
     ['gt(1,-1)', true],
     ['add(-1,-2)', -3],
+    //['- -1', 1],  // TODO
   ];
 
   tests.forEach(arr => {
