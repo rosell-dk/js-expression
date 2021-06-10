@@ -101,6 +101,7 @@ describe('Tokenizer: Misc', () => {
     ['{lname: "rosell"}', [[GROUPING_BEGIN, '{'],[LITERAL,'lname'],[INFIX_OP,':'],[LITERAL,'rosell'],[GROUPING_END,'}']]],
     ['{"lname": "rosell"}', [[GROUPING_BEGIN, '{'],[LITERAL,'lname'],[INFIX_OP,':'],[LITERAL,'rosell'],[GROUPING_END,'}']]],
     ['obj.id', [[IDENTIFIER, 'obj'],[INFIX_OP, '.'],[IDENTIFIER, 'id']]],   // tokenizer keeps unary + (parser deletes it)
+    //['voidish', [[IDENTIFIER, 'voidish']]],   // TODO - FIX!
   ];
 
   miscTests.forEach(arr => {
