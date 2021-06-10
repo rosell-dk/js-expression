@@ -35,7 +35,7 @@ let result = e.evaluate();   // evaluates to 6
 ## Supported operators:
 |            | Supported               |  Unsupported      |
 | ---------- | ----------------------- |  ---------------- |
-| Operators  | ',', '??', '||', '&&', '|', '^', '&', '==', '!=', '===', '<', '>', '<=', '>=', '>>', '<<', '>>>', '+', '-', '*', '/', '%', '**', '!', '~', 'typeof' | ?, yield, void, new, [?.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining) |
+| Operators  | `,`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`,  `typeof` | ?, yield, void, new, [?.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining) |
 | Literals   | numbers, strings, true, false, arrays - ie [1,2], undefined, null, NaN | objects, ie {firstName: 'Bjørn'} |
 
 
