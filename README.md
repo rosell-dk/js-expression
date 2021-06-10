@@ -32,38 +32,6 @@ e.addFunction('add', (a,b) => a+b);
 let result = e.evaluate();   // evaluates to 6
 ```
 
-## Support
-
-### Operators
-The following operators are supported:  
-`,`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`,  `typeof`
-
-The following are not:  
-`?`, `yield`, `void`, `new`, `?.` (I'm planning to support `?`)
-
-### Literals
-The following literals are supported:  
-numbers, strings, true, false, Arrays - ie `[1,2]`, undefined, null, NaN
-
-The following are not:  
-Object literals - ie `{firstName: 'Bjørn'}`
-
-### Other features
-The following features are supported:  
-Grouping with parenthesis, unary plus, unary minus
-
-The following are not - but I'm working on it:  
-- Ternary operator '?'
-- Member access, ie `obj.firstName`
-- Computed member access, ie `obj['firstName']`
-- Object constructors, ie {firstName: 'Bjørn'}
-
-The following are not - by intention:  
-- running other functions than those you add
-- accessing other variables than those you set
-- changing variables "from within" - so: no operators that makes assignments (++, --, =, etc)
-- function constructors
-
 ## How it works
 The library contains three engines, each in a class of its own, and a class pulling it together for convenience.
 
@@ -97,8 +65,6 @@ Note 2: Actual output is array of tokens, not array of string.
 
 The parser also gets rid of parenthesis. And it also handles unary minus and plus, which it transposes to "+/-" and "+/+", see above.
 
-
-
 ### Evaluator
 The evaluator evaluates the tokens and operators in the rpn list.
 
@@ -109,6 +75,37 @@ The evaluator evaluates the tokens and operators in the rpn list.
 
 Note: actual input must be array of tokens, not array of string, as the example could lead you to think
 
-
 ### Expression
 Pulls it all together. It takes care of parsing before evaluating and makes sure not to parse again upon subsequent evaluations.
+
+## Support
+
+### Operators
+The following operators are supported:  
+`,`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`,  `typeof`
+
+The following are not:  
+`?`, `yield`, `void`, `new`, `?.` (I'm planning to support `?`)
+
+### Literals
+The following literals are supported:  
+numbers, strings, true, false, Arrays - ie `[1,2]`, undefined, null, NaN
+
+The following are not:  
+Object literals - ie `{firstName: 'Bjørn'}`
+
+### Other features
+The following features are supported:  
+Grouping with parenthesis, unary plus, unary minus
+
+The following are not - but I'm working on it:  
+- Ternary operator '?'
+- Member access, ie `obj.firstName`
+- Computed member access, ie `obj['firstName']`
+- Object constructors, ie {firstName: 'Bjørn'}
+
+The following are not - by intention:  
+- running other functions than those you add
+- accessing other variables than those you set
+- changing variables "from within" - so: no operators that makes assignments (++, --, =, etc)
+- function constructors
