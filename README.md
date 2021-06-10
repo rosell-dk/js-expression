@@ -32,11 +32,18 @@ e.addFunction('add', (a,b) => a+b);
 let result = e.evaluate();   // evaluates to 6
 ```
 
-## Supported operators:
-|            | Supported               |  Unsupported      |
-| ---------- | ----------------------- |  ---------------- |
-| Operators  | `,`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`,  `typeof` | ?, yield, void, new, [?.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining) |
-| Literals   | numbers, strings, true, false, arrays - ie [1,2], undefined, null, NaN | objects, ie {firstName: 'Bjørn'} |
+## Supported
+
+*Operators*
+Supported: `,`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`,  `typeof`
+Unsupported: `?`, `yield`, `void`, `new`, `?.`
+
+*Literals*
+Supported: numbers, strings, true, false, Arrays - ie `[1,2]`, undefined, null, NaN |
+Unsupported: Object literals, ie `{firstName: 'Bjørn'}`
+
+*Other*
+Supported: Grouping with parenthesis, unary plus, unary minus
 
 
 ## Unsupported (working on it)
