@@ -38,27 +38,26 @@ let result = e.evaluate();   // evaluates to 6
 The following operators are supported:
 `,`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`,  `typeof`
 
-The following are not: `?`, `yield`, `void`, `new`, `?.`
-I'm planning to support `?`
+The following are not: `?`, `yield`, `void`, `new`, `?.` (I'm planning to support `?`)
 
 ### Literals
-The following literals are supported:
+The following literals are supported:  
 numbers, strings, true, false, Arrays - ie `[1,2]`, undefined, null, NaN
 
-The following are not:
+The following are not:  
 Object literals - ie `{firstName: 'Bjørn'}`
 
 ### Other features
-The following features are supported:
+The following features are supported:  
 Grouping with parenthesis, unary plus, unary minus
 
-The following are not - but I'm working on it:
+The following are not - but I'm working on it:  
 - Ternary operator '?'
 - Member access, ie `obj.firstName`
 - Computed member access, ie `obj['firstName']`
 - Object constructors, ie {firstName: 'Bjørn'}
 
-The following are not - by intention
+The following are not - by intention:  
 - running other functions than those you add
 - accessing other variables than those you set
 - changing variables "from within" - so: no operators that makes assignments (++, --, =, etc)
