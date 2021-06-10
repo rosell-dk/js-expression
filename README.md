@@ -34,17 +34,16 @@ let result = e.evaluate();   // evaluates to 6
 
 ## Supported
 
-*Operators*
-Supported: `,`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`,  `typeof`
-Unsupported: `?`, `yield`, `void`, `new`, `?.`
+### Operators
+- Supported: `,`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`,  `typeof`
+- Unsupported: `?`, `yield`, `void`, `new`, `?.`
 
-*Literals*
-Supported: numbers, strings, true, false, Arrays - ie `[1,2]`, undefined, null, NaN |
-Unsupported: Object literals, ie `{firstName: 'Bjørn'}`
+### Literals
+- Supported: numbers, strings, true, false, Arrays - ie `[1,2]`, undefined, null, NaN |
+- Unsupported: Object literals, ie `{firstName: 'Bjørn'}`
 
-*Other*
-Supported: Grouping with parenthesis, unary plus, unary minus
-
+### Other
+- Supported: Grouping with parenthesis, unary plus, unary minus
 
 ## Unsupported (working on it)
 - Ternary operator '?'
