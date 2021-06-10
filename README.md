@@ -35,10 +35,11 @@ let result = e.evaluate();   // evaluates to 6
 ## Support
 
 ### Operators
-The following operators are supported:
+The following operators are supported:  
 `,`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`,  `typeof`
 
-The following are not: `?`, `yield`, `void`, `new`, `?.` (I'm planning to support `?`)
+The following are not:  
+`?`, `yield`, `void`, `new`, `?.` (I'm planning to support `?`)
 
 ### Literals
 The following literals are supported:  
