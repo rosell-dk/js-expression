@@ -1,4 +1,4 @@
-import { Tokenizer, FUNCTION_CALL, FUNCTION_CALL_NO_ARGS, LITERAL, INFIX_OP, PREFIX_OP, VARIABLE, DOT, GROUPING_BEGIN, GROUPING_END }  from '../src/Tokenizer.js'
+import { Tokenizer, FUNCTION_CALL, FUNCTION_CALL_NO_ARGS, LITERAL, INFIX_OP, PREFIX_OP, IDENTIFIER, GROUPING_BEGIN, GROUPING_END }  from '../src/Tokenizer.js'
 
 import assert from 'assert'
 
@@ -87,10 +87,9 @@ describe('Tokenizer: Groupings', () => {
 
 describe('Tokenizer: Misc', () => {
   let miscTests = [
-    ['name', [[VARIABLE,'name']]],
-    ['name_2R', [[VARIABLE,'name_2R']]],
-    ['name.firstName', [[VARIABLE,'name'],[DOT,'.'],[VARIABLE,'firstName']]],
-    ['name["firstName"]', [[VARIABLE,'name'],[GROUPING_BEGIN,'['],[LITERAL,'firstName'],[GROUPING_END,']']]],
+    ['name', [[IDENTIFIER,'name']]],
+    ['name_2R', [[IDENTIFIER,'name_2R']]],
+    ['name["firstName"]', [[IDENTIFIER,'name'],[GROUPING_BEGIN,'['],[LITERAL,'firstName'],[GROUPING_END,']']]],
     ['true+1', [[LITERAL,true],[INFIX_OP, '+'],[LITERAL, 1]]],
     ['true-1', [[LITERAL,true],[INFIX_OP, '-'],[LITERAL, 1]]],
     ['7*4', [[LITERAL,7],[INFIX_OP, '*'],[LITERAL, 4]]],
@@ -101,6 +100,7 @@ describe('Tokenizer: Misc', () => {
     ['{}', [[GROUPING_BEGIN, '{'],[GROUPING_END, '}']]],
     ['{lname: "rosell"}', [[GROUPING_BEGIN, '{'],[LITERAL,'lname'],[INFIX_OP,':'],[LITERAL,'rosell'],[GROUPING_END,'}']]],
     ['{"lname": "rosell"}', [[GROUPING_BEGIN, '{'],[LITERAL,'lname'],[INFIX_OP,':'],[LITERAL,'rosell'],[GROUPING_END,'}']]],
+    ['obj.id', [[IDENTIFIER, 'obj'],[INFIX_OP, '.'],[IDENTIFIER, 'id']]],   // tokenizer keeps unary + (parser deletes it)
   ];
 
   miscTests.forEach(arr => {

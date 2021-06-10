@@ -39,6 +39,7 @@ describe('PARSER: Misc parsing into Rpn', () => {
     ['myFunc(1)', [1,'myFunc']],
     ['myFunc(1,2)', [1, 2, ',', 'myFunc']],
     ['myFunc(1,2,3)', [1, 2, ',', 3, ',', 'myFunc']],
+    ['obj.name', ['obj', 'name', '.']],
   ];
 
   tests.forEach(arr => {

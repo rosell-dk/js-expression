@@ -1,4 +1,4 @@
-import { Tokenizer, LITERAL, FUNCTION_CALL_NO_ARGS, VARIABLE, GROUPING_BEGIN, GROUPING_END }  from './Tokenizer.js'
+import { Tokenizer, LITERAL, FUNCTION_CALL_NO_ARGS, IDENTIFIER, GROUPING_BEGIN, GROUPING_END }  from './Tokenizer.js'
 
 class CommaList extends Array {
   toArray() {
@@ -54,6 +54,7 @@ export class Evaluator {
     '+/-': (a) => -a,
     '+/+': (a) => a,
     'typeof': (a) => typeof a,
+    '.': (a, b) => a[b],
   };
 
   static functions = {
@@ -99,7 +100,14 @@ export class Evaluator {
         let result = Evaluator.ops[tokenValue](a);
         stack.push(result);
         //console.log('Performed prefix op:', a, tokenValue, 'result:', result, 'stack:', stack);
-      } else if (token[0] == VARIABLE) {
+      } else if (token[0] == IDENTIFIER) {
+        if (i<rpnTokens.length-1) {
+          let nextToken = rpnTokens[i+1];
+          if (nextToken[1] == '.') {    // Property accessor
+            stack.push(token[1]);
+            continue;
+          }
+        }
         let variableName = token[1];
         if (!variables.hasOwnProperty(variableName)) {
           throw new Error('Variable is not defined: ' + variableName);

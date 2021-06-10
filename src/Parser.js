@@ -1,4 +1,4 @@
-import { Tokenizer, PREFIX_OP, INFIX_OP, VARIABLE, GROUPING_BEGIN, GROUPING_END }  from './Tokenizer.js'
+import { Tokenizer, PREFIX_OP, INFIX_OP, IDENTIFIER, GROUPING_BEGIN, GROUPING_END }  from './Tokenizer.js'
 
 export class Parser {
 
@@ -19,6 +19,7 @@ export class Parser {
     ['*', '/', '%'],
     '**',
     ['!', '~', '+/-', '+/+', 'typeof', 'void'],
+    '.'
   ];
 
   static getPrecedence(token) {
@@ -26,7 +27,7 @@ export class Parser {
       return 100;
     } else if (Tokenizer.isOperator(token)) {
       return Parser.precendenceHash[token[1]] + 1;
-    } else if (Tokenizer.isLiteral(token) || (token[0] == VARIABLE)) {
+    } else if (Tokenizer.isLiteral(token) || (token[0] == IDENTIFIER)) {
       return 100;
     }
     throw new Error('Could not get precendce of token:', token[1]);

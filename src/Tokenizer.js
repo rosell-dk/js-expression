@@ -1,12 +1,12 @@
 export const FUNCTION_CALL = -1;
 export const FUNCTION_CALL_NO_ARGS = -2;
 export const LITERAL = -4;
-export const VARIABLE = -5;
+export const IDENTIFIER = -5;
 export const GROUPING_BEGIN = -6;
 export const GROUPING_END = -7;
-export const DOT = -8;
 export const INFIX_OP = -11;
 export const PREFIX_OP = -12;
+export const OBJ = -12;
 
 export class Tokenizer {
 
@@ -49,14 +49,14 @@ export class Tokenizer {
     var regExes = [
 
       // function call without arguments
-      [FUNCTION_CALL_NO_ARGS, /^([a-zA-Z_]+)\(\s*\)/],
+      [FUNCTION_CALL_NO_ARGS, /^([a-zA-Z_$1-9]+)\(\s*\)/],
 
       // function call
-      [FUNCTION_CALL, /^([a-zA-Z_]+)(\()/],
+      [FUNCTION_CALL, /^([a-zA-Z_$1-9]+)(\()/],
 
       // infix operator
-      // +, -, *, /, %, &, |, ^, !, &&, ||, =, !=, ==, !==, ===, >, <, >=, >=, **, ??, ?, <<, >>, >>>, :, ~ and comma (,)
-      [INFIX_OP, /^([\<]{2}|[\>]{2,3}|[\*]{1,2}|[\?]{1,2}|[\&]{1,2}|[\|]{1,2}|[\=]{2,3}|[\!][\=]{1,2}|[\>\<][\=]|[\+\-\/\%\|\^\>\<\=\,\:])/],
+      // +, -, *, /, %, &, |, ^, !, &&, ||, =, !=, ==, !==, ===, >, <, >=, >=, **, ??, ?, <<, >>, >>>, :, ~, . and comma (,)
+      [INFIX_OP, /^([\<]{2}|[\>]{2,3}|[\*]{1,2}|[\?]{1,2}|[\&]{1,2}|[\|]{1,2}|[\=]{2,3}|[\!][\=]{1,2}|[\>\<][\=]|[\+\-\/\%\|\^\>\<\=\,\:\.])/],
 
       // prefix operator: !, ~, typeof, void
       [PREFIX_OP, /^([\!\~]|typeof|void)/],
@@ -82,18 +82,14 @@ export class Tokenizer {
       // string (double quotes)
       [LITERAL, /^"((?:(\\")|[^"])*)"/],
 
-      // variable
-      [VARIABLE, /^([a-zA-Z_1-9]+)/],
+      // variable  (acually, identifier - https://developer.mozilla.org/en-US/docs/Glossary/Identifier)
+      [IDENTIFIER, /^([a-zA-Z$_1-9]+)/],
 
       // Group begin - (left pare / left bracket / left curly bracket)
       [GROUPING_BEGIN, /^([\(\[\{])/],
 
       // Group end (right paren / right bracket / right curly bracket)
       [GROUPING_END, /^([\)\]\}])/],
-
-      // property accessor (dot)
-      [DOT, /^([\.])/],
-
 
       // ternary
       //[TERNARY, /^([\?])/],
@@ -143,9 +139,12 @@ export class Tokenizer {
       }
     }
 
-    // Transform VARIABLE inside literal objects into strings. Ie: {a:10} - "a" should be LITERAL
-    let groups = [];
     let token;
+    // Transform IDENTIFIER inside literal objects into strings. Ie: {a:10} - "a" should be LITERAL
+    // TODO: Not LITERAL, but perhaps some better name. And perhaps IDENTIFIER is fine, and
+    // the thing should be handled in Parser or Evaluator
+    let groups = [];
+    
     for (let pointer=0; pointer<tokens.length; pointer++) {
       token = tokens[pointer];
       if (token[0] == GROUPING_BEGIN) {
@@ -154,7 +153,7 @@ export class Tokenizer {
       if (token[0] == GROUPING_END) {
         groups.pop();
       }
-      if (token[0] == VARIABLE) {
+      if (token[0] == IDENTIFIER) {
         if (groups[groups.length -1] == '{') {
           token[0] = LITERAL;
         }
@@ -171,6 +170,18 @@ export class Tokenizer {
         }
       }
     }
+
+    // Transform IDENTIFIER after . to LITERAL
+    /*
+    for (let pointer=1; pointer<tokens.length; pointer++) {
+      token = tokens[pointer];
+      if (token[0] == IDENTIFIER) {
+        let prevToken = tokens[pointer-1];
+        if ((prevToken[1] == '.') && (prevToken[0] == INFIX_OP)) {
+          token[0] = LITERAL;
+        }
+      }
+    }*/
 
     return tokens;
   }
