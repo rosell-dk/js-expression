@@ -32,26 +32,33 @@ e.addFunction('add', (a,b) => a+b);
 let result = e.evaluate();   // evaluates to 6
 ```
 
-## Supported
+## Support
 
 ### Operators
-- Supported: `,`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`,  `typeof`
-- Unsupported: `?`, `yield`, `void`, `new`, `?.`
+The following operators are supported:
+`,`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`,  `typeof`
+
+The following are not: `?`, `yield`, `void`, `new`, `?.`
+I'm planning to support `?`
 
 ### Literals
-- Supported: numbers, strings, true, false, Arrays - ie `[1,2]`, undefined, null, NaN |
-- Unsupported: Object literals, ie `{firstName: 'Bjørn'}`
+The following literals are supported:
+numbers, strings, true, false, Arrays - ie `[1,2]`, undefined, null, NaN
 
-### Other
-- Supported: Grouping with parenthesis, unary plus, unary minus
+The following are not:
+Object literals - ie `{firstName: 'Bjørn'}`
 
-## Unsupported (working on it)
+### Other features
+The following features are supported:
+Grouping with parenthesis, unary plus, unary minus
+
+The following are not - but I'm working on it:
 - Ternary operator '?'
 - Member access, ie `obj.firstName`
 - Computed member access, ie `obj['firstName']`
 - Object constructors, ie {firstName: 'Bjørn'}
 
-## Unsupported features (I am intendendly not going to implement these)
+The following are not - by intention
 - running other functions than those you add
 - accessing other variables than those you set
 - changing variables "from within" - so: no operators that makes assignments (++, --, =, etc)
