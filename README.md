@@ -88,20 +88,16 @@ The following are not:
 `yield`, `void`, `new`, `?.`
 
 ### Literals
-The following literals are supported:  
-numbers, strings, true, false, Arrays - ie `[1,2]`, undefined, null, NaN
-
-The following are not:  
-Object literals - ie `{firstName: 'Bjørn'}`
+All literals are supported. That is:
+numbers, strings, true, false, Arrays - ie `[1,2]`, Objects - ie `{one: 1}` or `{'one': 1}`, undefined, null, NaN
 
 ### Other features
 The following features are supported:  
-Grouping with parenthesis, unary plus, unary minus
+Grouping with parenthesis, unary plus, unary minus,
 
 The following are not - but I'm working on it:  
 - Member access, ie `obj.firstName`
 - Computed member access, ie `obj['firstName']`
-- Object constructors, ie {firstName: 'Bjørn'}
 
 The following are not - by intention:  
 - running other functions than those you add

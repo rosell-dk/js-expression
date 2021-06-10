@@ -3,7 +3,7 @@ import { Parser }  from '../src/Parser.js'
 import { Evaluator }  from '../src/Evaluator.js'
 
 import assert from 'assert'
-
+/*
 describe('Evaluator: Basic evaluation', () => {
   let tests = [
     ['2*3*2', 12],
@@ -119,6 +119,7 @@ describe('Evaluator: Custom variables', () => {
 
   let tests = [
     ['imageType', 'png'],
+    //['nonExist==true']
   ];
 
   tests.forEach(arr => {
@@ -164,6 +165,32 @@ describe('Evaluator: Array constructor', () => {
     });
   });
 });
+*/
+describe('Evaluator: Object constructor', () => {
+
+  let tests = [
+    ['{}', {}],
+    ['{"a":1}', {'a':1}],
+    ['{"one":1, "two":2}', {'one':1, 'two':2}],
+    ['{one:1}', {one:1}],
+    ['{"two":1+1}', {two:2}],
+  ];
+
+  tests.forEach(arr => {
+    let s = arr[0];
+    let expectedResult = arr[1];
+
+    let tokens = Tokenizer.tokenize(s);
+    let tokensRpn = Parser.parse(tokens);
+    let result = Evaluator.evaluate(tokensRpn);
+
+    it(s + ' => ' + JSON.stringify(expectedResult) + ' - and type is plain Object', () => {
+      assert.deepEqual(result, expectedResult);
+      assert.equal(result instanceof Object, true);
+    });
+  });
+});
+
 
 describe('Evaluator: ternary operator', () => {
 
@@ -185,7 +212,7 @@ describe('Evaluator: ternary operator', () => {
 
     let tokens = Tokenizer.tokenize(s);
     let tokensRpn = Parser.parse(tokens);
-    console.log('rpn: ', tokensRpn);
+    //console.log('rpn: ', tokensRpn);
 
     let result = Evaluator.evaluate(tokensRpn);
     it(s + ' => ' + JSON.stringify(expectedResult), () => {

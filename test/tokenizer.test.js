@@ -40,13 +40,21 @@ describe('Tokenizer: Operators (prefix)', () => {
 describe('Tokenizer: Operators (infix)', () => {
   let infixTests = [
     ',', '??', '||', '&&', '|', '^', '&', '==', '!=', '===', '<', '>', '<=', '>=', '>>',
-    '<<', '>>>', '+', '-', '*', '/', '%', '**', '?', ':'
+    '<<', '>>>', '*', '/', '%', '**', '?', ':'
   ];
   infixTests.forEach(op => {
     it(op + ' is an infix operator', () => {
       assert.deepEqual(Tokenizer.tokenize(op), [[INFIX_OP, op]]);
     });
   });
+
+  it('+ is an infix operator here: 1+1', () => {
+    assert.deepEqual(Tokenizer.tokenize('1+1'), [[LITERAL, 1], [INFIX_OP, '+'], [LITERAL, 1]]);
+  });
+  it('- is an infix operator here: 1-1', () => {
+    assert.deepEqual(Tokenizer.tokenize('1-1'), [[LITERAL, 1], [INFIX_OP, '-'], [LITERAL, 1]]);
+  });
+
 });
 
 describe('Tokenizer: Function calls', () => {
@@ -88,9 +96,10 @@ describe('Tokenizer: Misc', () => {
     ['7*4', [[LITERAL,7],[INFIX_OP, '*'],[LITERAL, 4]]],
     ['7&&&4', [[LITERAL,7],[INFIX_OP, '&&'],[INFIX_OP, '&'],[LITERAL, 4]]],
     ['doit(3)', [[FUNCTION_CALL,'doit'],[GROUPING_BEGIN,'('],[LITERAL,3],[GROUPING_END,')']]],
-    ['- +1', [[INFIX_OP, '-'],[INFIX_OP, '+'],[LITERAL, 1]]],    // Notice that "INFIX_OP" is not quite right...
+    ['- -1', [[PREFIX_OP, '-'],[PREFIX_OP, '-'],[LITERAL, 1]]],
+    ['+ +1', [[PREFIX_OP, '+'],[PREFIX_OP, '+'],[LITERAL, 1]]],   // tokenizer keeps unary + (parser deletes it)
     ['{}', [[GROUPING_BEGIN, '{'],[GROUPING_END, '}']]],
-    ['{lname: "rosell"}', [[GROUPING_BEGIN, '{'],[VARIABLE,'lname'],[INFIX_OP,':'],[LITERAL,'rosell'],[GROUPING_END,'}']]],
+    ['{lname: "rosell"}', [[GROUPING_BEGIN, '{'],[LITERAL,'lname'],[INFIX_OP,':'],[LITERAL,'rosell'],[GROUPING_END,'}']]],
     ['{"lname": "rosell"}', [[GROUPING_BEGIN, '{'],[LITERAL,'lname'],[INFIX_OP,':'],[LITERAL,'rosell'],[GROUPING_END,'}']]],
   ];
 

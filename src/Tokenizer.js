@@ -143,6 +143,35 @@ export class Tokenizer {
       }
     }
 
+    // Transform VARIABLE inside literal objects into strings. Ie: {a:10} - "a" should be LITERAL
+    let groups = [];
+    let token;
+    for (let pointer=0; pointer<tokens.length; pointer++) {
+      token = tokens[pointer];
+      if (token[0] == GROUPING_BEGIN) {
+        groups.push(token[1]);
+      }
+      if (token[0] == GROUPING_END) {
+        groups.pop();
+      }
+      if (token[0] == VARIABLE) {
+        if (groups[groups.length -1] == '{') {
+          token[0] = LITERAL;
+        }
+      }
+    }
+
+    // Transform unary plus/minus to PREFIX_OP
+    for (let pointer=0; pointer<tokens.length; pointer++) {
+      token = tokens[pointer];
+      let prevToken = (pointer==0 ? null : tokens[pointer-1]);
+      if ((token[0] == INFIX_OP) && ((token[1] == '-') || (token[1] == '+'))) {
+        if ((prevToken == null) || (prevToken[0] == GROUPING_BEGIN) || (prevToken[1] == ',') || (prevToken[0] == PREFIX_OP)) {
+          token[0] = PREFIX_OP;
+        }
+      }
+    }
+
     return tokens;
   }
 

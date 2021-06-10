@@ -103,28 +103,41 @@ export class Evaluator {
         let variableName = token[1];
         if (!variables.hasOwnProperty(variableName)) {
           throw new Error('Variable is not defined: ' + variableName);
+          //stack.push(new ObjectProp(variableName));
+        } else {
+          stack.push(variables[variableName]);
         }
-        stack.push(variables[variableName]);
       } else if (tokenType == GROUPING_BEGIN) {
-        stack.push(tokenValue);
+        stack.push(token);  // Yes, push the whole token
       } else if (tokenType == GROUPING_END) {
-        if (tokenValue == ']') {
-          a = stack.pop();
-          if (a == '[') {
-            stack.push([]);
+        let items = [];
+        let bracket;
+        a = stack.pop();
+        if (a[0] == GROUPING_BEGIN) {
+          bracket = a
+        } else {
+          bracket = stack.pop();  // TODO: test bracket match
+          if (a instanceof CommaList) {
+            items = a.toArray();
           } else {
-            b = stack.pop();
-            if (b !== '[') {
-              throw new Error('Bracket mismatch');
-            }
-            if (a instanceof CommaList) {
-              stack.push(a.toArray());
-            } else {
-              stack.push([a]);
-            }
+            items = [a];
           }
         }
-
+        if (tokenValue == ']') {
+          if (bracket[1] != '[') {
+            throw Error('Bracket mismatch');
+          }
+          stack.push(items);
+        } else if (tokenValue == '}') {
+          if (bracket[1] != '{') {
+            throw Error('Curly bracket mismatch');
+          }
+          let obj = {};
+          items.forEach((pair) => {
+            obj[pair.a] = pair.b;
+          });
+          stack.push(obj);
+        }
       } else if (Tokenizer.isFunctionCall(token)) {
         let functionName = token[1];
         if (!functions.hasOwnProperty(functionName)) {
@@ -145,7 +158,6 @@ export class Evaluator {
         }
       }
     }
-    //console.log('result', stack);
     return stack[0];
   }
 

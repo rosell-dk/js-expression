@@ -18,10 +18,10 @@ describe('PARSER: Misc parsing into Rpn', () => {
     ['7+myFunc()', [7, 'myFunc', '+']],
     ['myFunc(1,2)', [1, 2, ',', 'myFunc']],
     ['-7*1', [7, '+/-', '1', '*']],     // unary minus (first)
-    ['+2*3', [2, '+/+', '3', '*']],     // unary plus
+    ['+2*3', [2, '3', '*']],     // unary plus is removed
     ['2+(-7*3)', [2, 7, '+/-', '3', '*', '+']],     // unary minus (first after paren)
     ['1+(-7)', [1, 7, '+/-', '+']],
-    ['- +1', ['1', '+/+', '+/-']],
+    ['- +1', ['1', '+/-']],
     ['- - -1', ['1', '+/-', '+/-', '+/-']],
     ['typeof -1', ['1', '+/-', 'typeof']],
     ['[]', ['[', ']']],
@@ -47,7 +47,7 @@ describe('PARSER: Misc parsing into Rpn', () => {
 
     let tokens = Tokenizer.tokenize(s);
     let tokensRpn = Parser.parse(tokens);
-    console.log('rpn', tokensRpn);
+    //console.log('rpn', tokensRpn);
     let tokenValuesRpn = tokensRpn.map(function(a) {return a[1]});
 
     it(s + ' => ' + expectedTokenValues.join(' '), () => {

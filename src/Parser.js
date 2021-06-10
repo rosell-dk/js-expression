@@ -1,4 +1,4 @@
-import { Tokenizer, PREFIX_OP, GROUPING_BEGIN, GROUPING_END, VARIABLE }  from './Tokenizer.js'
+import { Tokenizer, PREFIX_OP, INFIX_OP, VARIABLE, GROUPING_BEGIN, GROUPING_END }  from './Tokenizer.js'
 
 export class Parser {
 
@@ -82,9 +82,11 @@ export class Parser {
     for (let pointer=0; pointer<tokens.length; pointer++) {
       token = tokens[pointer];
       let prevToken = (pointer==0 ? null : tokens[pointer-1]);
-      if ((token[1] == '-') || (token[1] == '+')) {
-        if ((prevToken == null) || (prevToken[0] == GROUPING_BEGIN) || (prevToken[1] == ',') || (prevToken[0] == PREFIX_OP)) {
-          token[0] = PREFIX_OP;
+      if ((token[0] == PREFIX_OP) && ((token[1] == '-') || (token[1] == '+'))) {
+        if (token[1] == '+') {
+          // delete it!
+          tokens.splice(pointer, 1);
+        } else {
           token[1] = '+/' + token[1];
         }
       }
@@ -119,25 +121,25 @@ export class Parser {
         //     ie: (1+2)*3. Plus is only moved to closing paren
         //     ie: (1+(2=3)*4)*5. Plus is moved after 4 - passing the "="
 
-        let parenDepth = 0;
+        let groupDepth = 0;
         let nextToken;
 
         loop2:
         for (delta=0; (pointer+delta)<tokens.length-1; delta++) {
           nextToken = tokens[pointer+delta+1];
-          //console.log('examining:', nextToken, 'parenDepth:', parenDepth, 'delta:', delta);
+          //console.log('examining:', nextToken, 'groupDepth:', groupDepth, 'delta:', delta);
           if (nextToken[0] == GROUPING_END) {
-            parenDepth--;
-            if (parenDepth < 0) {
+            groupDepth--;
+            if (groupDepth < 0) {
               break;
             } else {
               continue;
             }
           } else if (nextToken[0] == GROUPING_BEGIN) {
-            parenDepth++;
+            groupDepth++;
             continue;
           }
-          if (parenDepth>0) {
+          if (groupDepth>0) {
             continue;
           }
 
@@ -154,7 +156,7 @@ export class Parser {
             continue;
           }
           if (precedence == precendenceNext) {
-            console.log('Same precedence');
+            //console.log('Same precedence');
             if (!Parser.isRightAssociative(nextToken)) {
               //console.log('Same precedence, stopping here because ' + nextToken[1] + 'is left associative');
               break;
