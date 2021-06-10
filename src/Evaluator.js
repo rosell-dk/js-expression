@@ -6,6 +6,13 @@ class CommaList extends Array {
   }
 }
 
+class Pair {
+  constructor (a,b) {
+    this.a = a;
+    this.b = b;
+  }
+}
+
 export class Evaluator {
 
   static ops = {
@@ -17,6 +24,8 @@ export class Evaluator {
         return new CommaList(a, b);
       }
     },
+    ':': (a, b) => new Pair(a,b),
+    '?': (condition, pair) => condition ? pair.a : pair.b,
     '??': (a, b) => a ?? b,
     '||': (a, b) => a || b,
     '&&': (a, b) => a && b,

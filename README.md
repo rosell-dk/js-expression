@@ -82,10 +82,10 @@ Pulls it all together. It takes care of parsing before evaluating and makes sure
 
 ### Operators
 The following operators are supported:  
-`,`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`,  `typeof`
+`,`, `?`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`,  `typeof`
 
 The following are not:  
-`?`, `yield`, `void`, `new`, `?.` (I'm planning to support `?`)
+`yield`, `void`, `new`, `?.`
 
 ### Literals
 The following literals are supported:  
@@ -99,7 +99,6 @@ The following features are supported:
 Grouping with parenthesis, unary plus, unary minus
 
 The following are not - but I'm working on it:  
-- Ternary operator '?'
 - Member access, ie `obj.firstName`
 - Computed member access, ie `obj['firstName']`
 - Object constructors, ie {firstName: 'Bjørn'}

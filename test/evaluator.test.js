@@ -4,7 +4,7 @@ import { Evaluator }  from '../src/Evaluator.js'
 
 import assert from 'assert'
 
-describe('Basic evaluation', () => {
+describe('Evaluator: Basic evaluation', () => {
   let tests = [
     ['2*3*2', 12],
     ['2**3', 8],
@@ -54,7 +54,7 @@ describe('Basic evaluation', () => {
   });
 });
 
-describe('Custom functions ("permanent" functions)', () => {
+describe('Evaluator: Custom functions ("permanent" functions)', () => {
 
   Evaluator.addFunction('equals', (a, b) => (a==b));
   Evaluator.addFunction('double', (a) => a*2);
@@ -88,7 +88,7 @@ describe('Custom functions ("permanent" functions)', () => {
   });
 });
 
-describe('Custom functions (passed in second argument)', () => {
+describe('Evaluator: Custom functions (passed in second argument)', () => {
 
   let functions = {
     'hello': () => 'world'
@@ -111,7 +111,7 @@ describe('Custom functions (passed in second argument)', () => {
   });
 });
 
-describe('Custom variables', () => {
+describe('Evaluator: Custom variables', () => {
 
   let variables = {
     'imageType': 'png',
@@ -135,7 +135,7 @@ describe('Custom variables', () => {
   });
 });
 
-describe('Array constructor', () => {
+describe('Evaluator: Array constructor', () => {
 
   let tests = [
     ['[]', []],
@@ -144,6 +144,10 @@ describe('Array constructor', () => {
     ['[0, 1, 2]', [0, 1, 2]],
     ['[1+1]', [2]],
     ['[1+1,2*4]', [2, 8]],
+    // TODO: ['[1,,3]', [1, undefined, 3]],  // https://www.w3resource.com/javascript/variables-literals/literals.php
+    ['[1,[2]]', [1, [2]]],
+    ['[[1],2]', [[1], 2]],
+    ['[[1],[2]]', [[1], [2]]],
   ];
 
   tests.forEach(arr => {
@@ -158,8 +162,34 @@ describe('Array constructor', () => {
       assert.deepEqual(result, expectedResult);
       assert.equal(result instanceof Array, true);
     });
-
-
   });
+});
 
+describe('Evaluator: ternary operator', () => {
+
+  let tests = [
+    ['true?"a":"b"', "a"],
+    ['true?2:3', 2],
+    ['false?2:3', 3],
+    ['1+2-3+4-5', -1],
+    ['false?0:true?1:0', 1],
+    ['false?"a":true?"b":"c"', "b"],
+    ['false?"a":false?"b":"c"', "c"],
+    ['true?"a":true?"b":"c"', "a"],
+    ['true?"a":false?"b":"c"', "a"],
+  ];
+
+  tests.forEach(arr => {
+    let s = arr[0];
+    let expectedResult = arr[1];
+
+    let tokens = Tokenizer.tokenize(s);
+    let tokensRpn = Parser.parse(tokens);
+    console.log('rpn: ', tokensRpn);
+
+    let result = Evaluator.evaluate(tokensRpn);
+    it(s + ' => ' + JSON.stringify(expectedResult), () => {
+      assert.deepEqual(result, expectedResult);
+    });
+  });
 });

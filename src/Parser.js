@@ -1,11 +1,11 @@
-import { Tokenizer, PREFIX_OP, GROUPING_BEGIN, GROUPING_END }  from './Tokenizer.js'
+import { Tokenizer, PREFIX_OP, GROUPING_BEGIN, GROUPING_END, VARIABLE }  from './Tokenizer.js'
 
 export class Parser {
 
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence
   static precendence = [
     ',',
-    '?',
+    ['?',':'],
     '??',
     '||',
     '&&',
@@ -18,7 +18,7 @@ export class Parser {
     ['+', '-'],
     ['*', '/', '%'],
     '**',
-    ['!', '~', '+/-', '+/+', 'typeof', 'void']
+    ['!', '~', '+/-', '+/+', 'typeof', 'void'],
   ];
 
   static getPrecedence(token) {
@@ -26,13 +26,14 @@ export class Parser {
       return 100;
     } else if (Tokenizer.isOperator(token)) {
       return Parser.precendenceHash[token[1]] + 1;
-    } else if (Tokenizer.isLiteral(token)) {
+    } else if (Tokenizer.isLiteral(token) || (token[0] == VARIABLE)) {
       return 100;
     }
+    throw new Error('Could not get precendce of token:', token[1]);
   }
 
   static rightAssociative = [
-    '?',
+    '?', ':',
     '**',
     '!', '~', '+/-', '+/+', 'typeof', 'void'
   ];
@@ -59,6 +60,7 @@ export class Parser {
         Parser.precendenceHash[op] = precendence;
       }
     });
+    //console.log('Precendeces:', Parser.precendenceHash);
   }
 
   /**
@@ -91,7 +93,7 @@ export class Parser {
     loop1:
     for (let pointer=0; pointer<tokens.length; pointer++) {
       iterations++;
-      if (iterations > 10) {
+      if (iterations > 1000) {
         break;
       }
 
@@ -118,11 +120,12 @@ export class Parser {
         //     ie: (1+(2=3)*4)*5. Plus is moved after 4 - passing the "="
 
         let parenDepth = 0;
+        let nextToken;
 
         loop2:
         for (delta=0; (pointer+delta)<tokens.length-1; delta++) {
-          let nextToken = tokens[pointer+delta+1];
-          //console.log('examining:', nextToken, 'parenDepth:', parenDepth);
+          nextToken = tokens[pointer+delta+1];
+          //console.log('examining:', nextToken, 'parenDepth:', parenDepth, 'delta:', delta);
           if (nextToken[0] == GROUPING_END) {
             parenDepth--;
             if (parenDepth < 0) {
@@ -151,15 +154,22 @@ export class Parser {
             continue;
           }
           if (precedence == precendenceNext) {
+            console.log('Same precedence');
             if (!Parser.isRightAssociative(nextToken)) {
+              //console.log('Same precedence, stopping here because ' + nextToken[1] + 'is left associative');
               break;
             }
             if (tokensMoved.indexOf(nextToken) >= 0) {
+              //console.log('That token has already been moved, stopping here');
               break;
             }
             continue;
           }
-
+          if (precedence > precendenceNext) {
+            //console.log('Stopping because ' + nextToken[1] + ' has lower precedence than ' + token[1], precendenceNext, precedence);
+            break;
+          }
+          //console.log('Reached the end');
           break;
         }
 

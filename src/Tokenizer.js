@@ -5,8 +5,6 @@ export const VARIABLE = -5;
 export const GROUPING_BEGIN = -6;
 export const GROUPING_END = -7;
 export const DOT = -8;
-export const PROPERTY_ACCESSOR_LEFT = -9;
-export const PROPERTY_ACCESSOR_RIGHT = -10;
 export const INFIX_OP = -11;
 export const PREFIX_OP = -12;
 
@@ -57,8 +55,8 @@ export class Tokenizer {
       [FUNCTION_CALL, /^([a-zA-Z_]+)(\()/],
 
       // infix operator
-      // +, -, *, /, %, &, |, ^, !, &&, ||, =, !=, ==, !==, ===, >, <, >=, >=, **, ??, ?, <<, >>, >>>, ~ and comma (,)
-      [INFIX_OP, /^([\<]{2}|[\>]{2,3}|[\*]{1,2}|[\?]{1,2}|[\&]{1,2}|[\|]{1,2}|[\=]{2,3}|[\!][\=]{1,2}|[\>\<][\=]|[\+\-\/\%\|\^\>\<\=\,])/],
+      // +, -, *, /, %, &, |, ^, !, &&, ||, =, !=, ==, !==, ===, >, <, >=, >=, **, ??, ?, <<, >>, >>>, :, ~ and comma (,)
+      [INFIX_OP, /^([\<]{2}|[\>]{2,3}|[\*]{1,2}|[\?]{1,2}|[\&]{1,2}|[\|]{1,2}|[\=]{2,3}|[\!][\=]{1,2}|[\>\<][\=]|[\+\-\/\%\|\^\>\<\=\,\:])/],
 
       // prefix operator: !, ~, typeof, void
       [PREFIX_OP, /^([\!\~]|typeof|void)/],
@@ -85,13 +83,13 @@ export class Tokenizer {
       [LITERAL, /^"((?:(\\")|[^"])*)"/],
 
       // variable
-      [VARIABLE, /^([a-zA-Z_]+)/],
+      [VARIABLE, /^([a-zA-Z_1-9]+)/],
 
-      // Group begin (left paren / left bracket)
-      [GROUPING_BEGIN, /^([\(\[])/],
+      // Group begin - (left pare / left bracket / left curly bracket)
+      [GROUPING_BEGIN, /^([\(\[\{])/],
 
-      // right paren
-      [GROUPING_END, /^([\)\]])/],
+      // Group end (right paren / right bracket / right curly bracket)
+      [GROUPING_END, /^([\)\]\}])/],
 
       // property accessor (dot)
       [DOT, /^([\.])/],

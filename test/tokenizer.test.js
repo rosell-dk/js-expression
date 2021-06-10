@@ -40,7 +40,7 @@ describe('Tokenizer: Operators (prefix)', () => {
 describe('Tokenizer: Operators (infix)', () => {
   let infixTests = [
     ',', '??', '||', '&&', '|', '^', '&', '==', '!=', '===', '<', '>', '<=', '>=', '>>',
-    '<<', '>>>', '+', '-', '*', '/', '%', '**'
+    '<<', '>>>', '+', '-', '*', '/', '%', '**', '?', ':'
   ];
   infixTests.forEach(op => {
     it(op + ' is an infix operator', () => {
@@ -62,7 +62,8 @@ describe('Tokenizer: Function calls', () => {
 describe('Tokenizer: Groupings', () => {
   let tests = [
     ['(', ')'],
-    ['[', ']']
+    ['[', ']'],
+    ['{', '}'],
   ];
   tests.forEach(test => {
     it(test[0] + ' is a GROUPING_BEGIN', () => {
@@ -75,18 +76,22 @@ describe('Tokenizer: Groupings', () => {
 
 });
 
+
 describe('Tokenizer: Misc', () => {
   let miscTests = [
     ['name', [[VARIABLE,'name']]],
+    ['name_2R', [[VARIABLE,'name_2R']]],
     ['name.firstName', [[VARIABLE,'name'],[DOT,'.'],[VARIABLE,'firstName']]],
     ['name["firstName"]', [[VARIABLE,'name'],[GROUPING_BEGIN,'['],[LITERAL,'firstName'],[GROUPING_END,']']]],
     ['true+1', [[LITERAL,true],[INFIX_OP, '+'],[LITERAL, 1]]],
     ['true-1', [[LITERAL,true],[INFIX_OP, '-'],[LITERAL, 1]]],
     ['7*4', [[LITERAL,7],[INFIX_OP, '*'],[LITERAL, 4]]],
     ['7&&&4', [[LITERAL,7],[INFIX_OP, '&&'],[INFIX_OP, '&'],[LITERAL, 4]]],
-    ['doit(3)', [[FUNCTION_CALL,'doit'],[GROUPING_BEGIN,'('],[LITERAL,3],[GROUPING_END, ')']]],
+    ['doit(3)', [[FUNCTION_CALL,'doit'],[GROUPING_BEGIN,'('],[LITERAL,3],[GROUPING_END,')']]],
     ['- +1', [[INFIX_OP, '-'],[INFIX_OP, '+'],[LITERAL, 1]]],    // Notice that "INFIX_OP" is not quite right...
-
+    ['{}', [[GROUPING_BEGIN, '{'],[GROUPING_END, '}']]],
+    ['{lname: "rosell"}', [[GROUPING_BEGIN, '{'],[VARIABLE,'lname'],[INFIX_OP,':'],[LITERAL,'rosell'],[GROUPING_END,'}']]],
+    ['{"lname": "rosell"}', [[GROUPING_BEGIN, '{'],[LITERAL,'lname'],[INFIX_OP,':'],[LITERAL,'rosell'],[GROUPING_END,'}']]],
   ];
 
   miscTests.forEach(arr => {
