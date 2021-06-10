@@ -134,3 +134,32 @@ describe('Custom variables', () => {
     });
   });
 });
+
+describe('Array constructor', () => {
+
+  let tests = [
+    ['[]', []],
+    ['[0]', [0]],
+    ['[0, 1]', [0, 1]],
+    ['[0, 1, 2]', [0, 1, 2]],
+    ['[1+1]', [2]],
+    ['[1+1,2*4]', [2, 8]],
+  ];
+
+  tests.forEach(arr => {
+    let s = arr[0];
+    let expectedResult = arr[1];
+
+    let tokens = Tokenizer.tokenize(s);
+    let tokensRpn = Parser.parse(tokens);
+    let result = Evaluator.evaluate(tokensRpn);
+
+    it(s + ' => ' + JSON.stringify(expectedResult) + ' - and type is plain Array', () => {
+      assert.deepEqual(result, expectedResult);
+      assert.equal(result instanceof Array, true);
+    });
+
+
+  });
+
+});

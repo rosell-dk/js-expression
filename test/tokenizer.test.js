@@ -1,9 +1,9 @@
-import { Tokenizer, FUNCTION_CALL, FUNCTION_CALL_NO_ARGS, LITERAL, INFIX_OP, PREFIX_OP, VARIABLE, GROUPING_BEGIN, GROUPING_END, DOT, PROPERTY_ACCESSOR_LEFT, PROPERTY_ACCESSOR_RIGHT }  from '../src/Tokenizer.js'
+import { Tokenizer, FUNCTION_CALL, FUNCTION_CALL_NO_ARGS, LITERAL, INFIX_OP, PREFIX_OP, VARIABLE, DOT, GROUPING_BEGIN, GROUPING_END }  from '../src/Tokenizer.js'
 
 import assert from 'assert'
 
 
-describe('Literals', () => {
+describe('Tokenizer: Literals', () => {
   let literalTests = [
     ['""', ''],
     ['\'\'', ''],
@@ -25,16 +25,19 @@ describe('Literals', () => {
   });
 });
 
-describe('Operators (prefix)', () => {
+describe('Tokenizer: Operators (prefix)', () => {
   it('! is a prefix operator', () => {
     assert.deepEqual(Tokenizer.tokenize('!'), [[PREFIX_OP, '!']]);
   });
   it('~ is a prefix operator', () => {
     assert.deepEqual(Tokenizer.tokenize('~'), [[PREFIX_OP, '~']]);
   });
+  it('typeof is a prefix operator', () => {
+    assert.deepEqual(Tokenizer.tokenize('typeof'), [[PREFIX_OP, 'typeof']]);
+  });
 });
 
-describe('Operators (infix)', () => {
+describe('Tokenizer: Operators (infix)', () => {
   let infixTests = [
     ',', '??', '||', '&&', '|', '^', '&', '==', '!=', '===', '<', '>', '<=', '>=', '>>',
     '<<', '>>>', '+', '-', '*', '/', '%', '**'
@@ -46,25 +49,43 @@ describe('Operators (infix)', () => {
   });
 });
 
-describe('Function calls', () => {
+describe('Tokenizer: Function calls', () => {
   it('doit() is a function call (FUNCTION_CALL_NO_ARGS)', () => {
     assert.deepEqual(Tokenizer.tokenize('doit()'), [[FUNCTION_CALL_NO_ARGS, 'doit']]);
   });
+
+  it('doit(1) is a function call (FUNCTION_CALL)', () => {
+    assert.deepEqual(Tokenizer.tokenize('doit(1)'), [[FUNCTION_CALL, 'doit'],[GROUPING_BEGIN,'('],[LITERAL, 1],[GROUPING_END,')']]);
+  });
 });
 
-describe('Misc', () => {
+describe('Tokenizer: Groupings', () => {
+  let tests = [
+    ['(', ')'],
+    ['[', ']']
+  ];
+  tests.forEach(test => {
+    it(test[0] + ' is a GROUPING_BEGIN', () => {
+      assert.deepEqual(Tokenizer.tokenize(test[0]), [[GROUPING_BEGIN, test[0]]]);
+    });
+    it(test[1] + ' is a GROUPING_END', () => {
+      assert.deepEqual(Tokenizer.tokenize(test[1]), [[GROUPING_END, test[1]]]);
+    });
+  });
+
+});
+
+describe('Tokenizer: Misc', () => {
   let miscTests = [
-    ['(', [[GROUPING_BEGIN,'(']]],
-    [')', [[GROUPING_END,')']]],
     ['name', [[VARIABLE,'name']]],
     ['name.firstName', [[VARIABLE,'name'],[DOT,'.'],[VARIABLE,'firstName']]],
-    ['name["firstName"]', [[VARIABLE,'name'],[PROPERTY_ACCESSOR_LEFT,'['],[LITERAL,'firstName'],[PROPERTY_ACCESSOR_RIGHT,']']]],
+    ['name["firstName"]', [[VARIABLE,'name'],[GROUPING_BEGIN,'['],[LITERAL,'firstName'],[GROUPING_END,']']]],
     ['true+1', [[LITERAL,true],[INFIX_OP, '+'],[LITERAL, 1]]],
     ['true-1', [[LITERAL,true],[INFIX_OP, '-'],[LITERAL, 1]]],
     ['7*4', [[LITERAL,7],[INFIX_OP, '*'],[LITERAL, 4]]],
     ['7&&&4', [[LITERAL,7],[INFIX_OP, '&&'],[INFIX_OP, '&'],[LITERAL, 4]]],
     ['doit(3)', [[FUNCTION_CALL,'doit'],[GROUPING_BEGIN,'('],[LITERAL,3],[GROUPING_END, ')']]],
-    ['- +1', [[INFIX_OP, '-'],[INFIX_OP, '+'], [LITERAL, 1]]],    // Notice that "INFIX_OP" is not quite right...
+    ['- +1', [[INFIX_OP, '-'],[INFIX_OP, '+'],[LITERAL, 1]]],    // Notice that "INFIX_OP" is not quite right...
 
   ];
 

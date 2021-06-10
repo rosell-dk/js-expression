@@ -1,14 +1,20 @@
-import { Tokenizer, LITERAL, FUNCTION_CALL_NO_ARGS, VARIABLE }  from './Tokenizer.js'
+import { Tokenizer, LITERAL, FUNCTION_CALL_NO_ARGS, VARIABLE, GROUPING_BEGIN, GROUPING_END }  from './Tokenizer.js'
+
+class CommaList extends Array {
+  toArray() {
+    return this.slice(0);
+  }
+}
 
 export class Evaluator {
 
   static ops = {
     ',': (a,b) => {
-      if (Array.isArray(a)) {
+      if (a instanceof CommaList) {
         a.push(b);
         return a;
       } else {
-        return [a,b];   // TODO: Custom class instead (ie "List")
+        return new CommaList(a, b);
       }
     },
     '??': (a, b) => a ?? b,
@@ -74,13 +80,13 @@ export class Evaluator {
       if (tokenType == LITERAL) {
         stack.push(tokenValue)
       } else if (Tokenizer.isInfix(token)) {
-        b=stack.pop();
-        a=stack.pop();
+        b = stack.pop();
+        a = stack.pop();
         let result = Evaluator.ops[tokenValue](a, b);
         stack.push(result);
         //console.log('Performed infix op:', a, b, tokenValue, 'result:', result, 'stack:', stack);
       } else if (Tokenizer.isPrefix(token)) {
-        a=stack.pop();
+        a = stack.pop();
         let result = Evaluator.ops[tokenValue](a);
         stack.push(result);
         //console.log('Performed prefix op:', a, tokenValue, 'result:', result, 'stack:', stack);
@@ -90,6 +96,26 @@ export class Evaluator {
           throw new Error('Variable is not defined: ' + variableName);
         }
         stack.push(variables[variableName]);
+      } else if (tokenType == GROUPING_BEGIN) {
+        stack.push(tokenValue);
+      } else if (tokenType == GROUPING_END) {
+        if (tokenValue == ']') {
+          a = stack.pop();
+          if (a == '[') {
+            stack.push([]);
+          } else {
+            b = stack.pop();
+            if (b !== '[') {
+              throw new Error('Bracket mismatch');
+            }
+            if (a instanceof CommaList) {
+              stack.push(a.toArray());
+            } else {
+              stack.push([a]);
+            }
+          }
+        }
+
       } else if (Tokenizer.isFunctionCall(token)) {
         let functionName = token[1];
         if (!functions.hasOwnProperty(functionName)) {
@@ -100,7 +126,7 @@ export class Evaluator {
         } else {
           let popped = stack.pop();
           let arr = [];
-          if (Array.isArray(popped)) {
+          if (popped instanceof CommaList) {
             arr = popped;
           } else {
             arr.push(popped);

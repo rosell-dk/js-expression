@@ -4,18 +4,17 @@ import { Parser }  from '../src/Parser.js'
 import assert from 'assert'
 
 
-describe('Parsing into Rpn', () => {
+describe('PARSER: Misc parsing into Rpn', () => {
   let tests = [
     ['1+2', [1,2,'+']],
     ['1+(2+3)*4', [1,2,3,'+',4,'*','+']],
     ['1+2-3', [1,2,'+',3,'-']],             // left-right associativity
     ['1**2**3', [1,2,3,'**','**']],         // right-left associativity
+    ['!true', [true, '!']],
     ['!(true)', [true,'!']],
-    ['doit(3)', [3,'doit']],
-    ['doit()', ['doit']],
-    ['7+doit(8)', [7, 8, 'doit', '+']],
-    ['7+doit()', [7, 'doit', '+']],
-    ['doit(1,2)', [1, 2, ',', 'doit']],
+    ['7+myFunc(8)', [7, 8, 'myFunc', '+']],
+    ['7+myFunc()', [7, 'myFunc', '+']],
+    ['myFunc(1,2)', [1, 2, ',', 'myFunc']],
     ['-7*1', [7, '+/-', '1', '*']],     // unary minus (first)
     ['+2*3', [2, '+/+', '3', '*']],     // unary plus
     ['2+(-7*3)', [2, 7, '+/-', '3', '*', '+']],     // unary minus (first after paren)
@@ -23,7 +22,14 @@ describe('Parsing into Rpn', () => {
     ['- +1', ['1', '+/+', '+/-']],
     ['- - -1', ['1', '+/-', '+/-', '+/-']],
     ['typeof -1', ['1', '+/-', 'typeof']],
-    //['!true', [true, '!']],
+    ['[]', ['[', ']']],
+    ['[1]', ['[', 1, ']']],
+    ['[1,2]', ['[', 1, 2, ',', ']']],
+    ['[1,2,3]', ['[', 1, 2, ',', 3, ',', ']']],
+    ['myFunc()', ['myFunc']],
+    ['myFunc(1)', [1,'myFunc']],
+    ['myFunc(1,2)', [1, 2, ',', 'myFunc']],
+    ['myFunc(1,2,3)', [1, 2, ',', 3, ',', 'myFunc']],
   ];
 
   tests.forEach(arr => {
@@ -34,7 +40,7 @@ describe('Parsing into Rpn', () => {
     let tokensRpn = Parser.parse(tokens);
     let tokenValuesRpn = tokensRpn.map(function(a) {return a[1]});
 
-    it(s + ' => ' + JSON.stringify(expectedTokenValues), () => {
+    it(s + ' => ' + expectedTokenValues.join(' '), () => {
       assert.deepEqual(tokenValuesRpn, expectedTokenValues);
     });
   });

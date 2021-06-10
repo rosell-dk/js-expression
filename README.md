@@ -33,25 +33,23 @@ let result = e.evaluate();   // evaluates to 6
 ```
 
 ## Supported operators:
-',', '??', '||', '&&', '|', '^', '&', '==', '!=', '===', '<', '>', '<=', '>=', '>>', '<<', '>>>', '+', '-', '*', '/', '%', '**', '!', '~', 'typeof'
+|            | Supported               |  Unsupported      |
+| ---------- | ----------------------- |  ---------------- |
+| Operators  | ',', '??', '||', '&&', '|', '^', '&', '==', '!=', '===', '<', '>', '<=', '>=', '>>', '<<', '>>>', '+', '-', '*', '/', '%', '**', '!', '~', 'typeof' | ?, yield, void, new, [?.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining) |
+| Literals   | numbers, strings, true, false, arrays - ie [1,2], undefined, null, NaN | objects, ie {firstName: 'Bjørn'} |
+
 
 ## Unsupported (working on it)
-- Unary plus and minus, ie "-7" (Actually, it has just been implemented, but it is not tested thoroughly yet (see #1)
 - Ternary operator '?'
 - Member access, ie `obj.firstName`
 - Computed member access, ie `obj['firstName']`
 - Object constructors, ie {firstName: 'Bjørn'}
-- Array constructors, ie [1,2]
 
 ## Unsupported features (I am intendendly not going to implement these)
 - running other functions than those you add
 - accessing other variables than those you set
 - changing variables "from within" - so: no operators that makes assignments (++, --, =, etc)
 - function constructors
-- new keyword
-- Optional chaining [?.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
-- yield
-- void
 
 ## How it works
 The library contains three engines, each in a class of its own, and a class pulling it together for convenience.
