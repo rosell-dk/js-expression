@@ -1,4 +1,4 @@
-import { Tokenizer, PREFIX_OP }  from './Tokenizer.js'
+import { Tokenizer, PREFIX_OP, GROUPING_BEGIN, GROUPING_END }  from './Tokenizer.js'
 
 export class Parser {
 
@@ -18,7 +18,7 @@ export class Parser {
     ['+', '-'],
     ['*', '/', '%'],
     '**',
-    ['!', '~', '+/-', '+/+']
+    ['!', '~', '+/-', '+/+', 'typeof', 'void']
   ];
 
   static getPrecedence(token) {
@@ -34,8 +34,7 @@ export class Parser {
   static rightAssociative = [
     '?',
     '**',
-    '!', '~',
-    '+/-', '+/+'
+    '!', '~', '+/-', '+/+', 'typeof', 'void'
   ];
 
   static isRightAssociative(token) {
@@ -82,7 +81,7 @@ export class Parser {
       token = tokens[pointer];
       let prevToken = (pointer==0 ? null : tokens[pointer-1]);
       if ((token[1] == '-') || (token[1] == '+')) {
-        if ((prevToken == null) || (prevToken[1] == '(') || (prevToken[1] == ',') || (prevToken[1] == '+/-') || (prevToken[1] == '+/+')) {
+        if ((prevToken == null) || (prevToken[0] == GROUPING_BEGIN) || (prevToken[1] == ',') || (prevToken[0] == PREFIX_OP)) {
           token[0] = PREFIX_OP;
           token[1] = '+/' + token[1];
         }
@@ -124,14 +123,14 @@ export class Parser {
         for (delta=0; (pointer+delta)<tokens.length-1; delta++) {
           let nextToken = tokens[pointer+delta+1];
           //console.log('examining:', nextToken, 'parenDepth:', parenDepth);
-          if (nextToken[1] == ')') {
+          if (nextToken[0] == GROUPING_END) {
             parenDepth--;
             if (parenDepth < 0) {
               break;
             } else {
               continue;
             }
-          } else if (nextToken[1] == '(') {
+          } else if (nextToken[0] == GROUPING_BEGIN) {
             parenDepth++;
             continue;
           }

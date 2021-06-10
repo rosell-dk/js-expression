@@ -4,7 +4,7 @@ export class Evaluator {
 
   static ops = {
     ',': (a,b) => {
-      if (a.forEach) {
+      if (Array.isArray(a)) {
         a.push(b);
         return a;
       } else {
@@ -38,6 +38,7 @@ export class Evaluator {
     '~': (a) => ~a,
     '+/-': (a) => -a,
     '+/+': (a) => a,
+    'typeof': (a) => typeof a,
   };
 
   static functions = {

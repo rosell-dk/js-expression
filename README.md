@@ -12,7 +12,7 @@ let e = new Expression('(1+1)*3');
 let result = e.evaluate();   // evaluates to 6
 ```
 
-Variables can be injected like this:
+Variables can be added like this:
 
 ```javascript
 let e = new Expression('shoeSize + 2');
@@ -33,7 +33,7 @@ let result = e.evaluate();   // evaluates to 6
 ```
 
 ## Supported operators:
-',', '??', '||', '&&', '|', '^', '&', '==', '!=', '===', '<', '>', '<=', '>=', '>>', '<<', '>>>', '+', '-', '*', '/', '%', '**', '!', '~'
+',', '??', '||', '&&', '|', '^', '&', '==', '!=', '===', '<', '>', '<=', '>=', '>>', '<<', '>>>', '+', '-', '*', '/', '%', '**', '!', '~', 'typeof'
 
 ## Unsupported (working on it)
 - Unary plus and minus, ie "-7" (Actually, it has just been implemented, but it is not tested thoroughly yet (see #1)
@@ -44,11 +44,14 @@ let result = e.evaluate();   // evaluates to 6
 - Array constructors, ie [1,2]
 
 ## Unsupported features (I am intendendly not going to implement these)
-- operators that makes assignments (++, --, =, etc)
+- running other functions than those you add
+- accessing other variables than those you set
+- changing variables "from within" - so: no operators that makes assignments (++, --, =, etc)
 - function constructors
 - new keyword
 - Optional chaining [?.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
 - yield
+- void
 
 ## How it works
 The library contains three engines, each in a class of its own, and a class pulling it together for convenience.

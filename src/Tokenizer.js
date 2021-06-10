@@ -2,8 +2,8 @@ export const FUNCTION_CALL = -1;
 export const FUNCTION_CALL_NO_ARGS = -2;
 export const LITERAL = -4;
 export const VARIABLE = -5;
-export const LEFT_PAREN = -6;
-export const RIGHT_PAREN = -7;
+export const GROUPING_BEGIN = -6;
+export const GROUPING_END = -7;
 export const DOT = -8;
 export const PROPERTY_ACCESSOR_LEFT = -9;
 export const PROPERTY_ACCESSOR_RIGHT = -10;
@@ -20,10 +20,10 @@ export class Tokenizer {
   output:
   [
       [[ FUNCTION_CALL, 'isTrue' ],
-      [[ LEFT_PAREN, '(' ],
+      [[ GROUPING_BEGIN, '(' ],
       [[ LITERAL, 6 ],
       [[ LITERAL, true ],
-      [[ RIGHT_PAREN, ')' ],
+      [[ GROUPING_END, ')' ],
   ]
 
   ECMA spec:
@@ -60,8 +60,8 @@ export class Tokenizer {
       // +, -, *, /, %, &, |, ^, !, &&, ||, =, !=, ==, !==, ===, >, <, >=, >=, **, ??, ?, <<, >>, >>>, ~ and comma (,)
       [INFIX_OP, /^([\<]{2}|[\>]{2,3}|[\*]{1,2}|[\?]{1,2}|[\&]{1,2}|[\|]{1,2}|[\=]{2,3}|[\!][\=]{1,2}|[\>\<][\=]|[\+\-\/\%\|\^\>\<\=\,])/],
 
-      // prefix operator: ! or ~
-      [PREFIX_OP, /^([\!\~])/],
+      // prefix operator: !, ~, typeof, void
+      [PREFIX_OP, /^([\!\~]|typeof|void)/],
 
       // boolean
       [LITERAL, /^(true|false)/, a => (a == 'true')],
@@ -87,20 +87,15 @@ export class Tokenizer {
       // variable
       [VARIABLE, /^([a-zA-Z_]+)/],
 
-      // left paren
-      [LEFT_PAREN, /^([\(])/],
+      // Group begin (left paren / left bracket)
+      [GROUPING_BEGIN, /^([\(\[])/],
 
       // right paren
-      [RIGHT_PAREN, /^([\)])/],
+      [GROUPING_END, /^([\)\]])/],
 
       // property accessor (dot)
       [DOT, /^([\.])/],
 
-      // property accessor (left)
-      [PROPERTY_ACCESSOR_LEFT, /^([\[])/],
-
-      // property accessor (right)
-      [PROPERTY_ACCESSOR_RIGHT, /^([\]])/],
 
       // ternary
       //[TERNARY, /^([\?])/],

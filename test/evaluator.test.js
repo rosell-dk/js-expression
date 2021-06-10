@@ -35,7 +35,9 @@ describe('Basic evaluation', () => {
     ['-2*3', -6],
     ['+2*3', 6],
     ['2+(-7*3)', -19],
+    ['typeof -1', 'number'],   // both are right associative
     ['~!false', -2],   // both are right associative. ~!false => ~true => -2
+    //['void 0', 'number'],   // We removed void
   ];
 
   tests.forEach(arr => {

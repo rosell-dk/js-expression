@@ -1,4 +1,4 @@
-import { Tokenizer, FUNCTION_CALL, FUNCTION_CALL_NO_ARGS, LITERAL, INFIX_OP, PREFIX_OP, VARIABLE, LEFT_PAREN, RIGHT_PAREN, DOT, PROPERTY_ACCESSOR_LEFT, PROPERTY_ACCESSOR_RIGHT }  from '../src/Tokenizer.js'
+import { Tokenizer, FUNCTION_CALL, FUNCTION_CALL_NO_ARGS, LITERAL, INFIX_OP, PREFIX_OP, VARIABLE, GROUPING_BEGIN, GROUPING_END, DOT, PROPERTY_ACCESSOR_LEFT, PROPERTY_ACCESSOR_RIGHT }  from '../src/Tokenizer.js'
 
 import assert from 'assert'
 
@@ -54,8 +54,8 @@ describe('Function calls', () => {
 
 describe('Misc', () => {
   let miscTests = [
-    ['(', [[LEFT_PAREN,'(']]],
-    [')', [[RIGHT_PAREN,')']]],
+    ['(', [[GROUPING_BEGIN,'(']]],
+    [')', [[GROUPING_END,')']]],
     ['name', [[VARIABLE,'name']]],
     ['name.firstName', [[VARIABLE,'name'],[DOT,'.'],[VARIABLE,'firstName']]],
     ['name["firstName"]', [[VARIABLE,'name'],[PROPERTY_ACCESSOR_LEFT,'['],[LITERAL,'firstName'],[PROPERTY_ACCESSOR_RIGHT,']']]],
@@ -63,7 +63,7 @@ describe('Misc', () => {
     ['true-1', [[LITERAL,true],[INFIX_OP, '-'],[LITERAL, 1]]],
     ['7*4', [[LITERAL,7],[INFIX_OP, '*'],[LITERAL, 4]]],
     ['7&&&4', [[LITERAL,7],[INFIX_OP, '&&'],[INFIX_OP, '&'],[LITERAL, 4]]],
-    ['doit(3)', [[FUNCTION_CALL,'doit'],[LEFT_PAREN,'('],[LITERAL,3],[RIGHT_PAREN, ')']]],
+    ['doit(3)', [[FUNCTION_CALL,'doit'],[GROUPING_BEGIN,'('],[LITERAL,3],[GROUPING_END, ')']]],
     ['- +1', [[INFIX_OP, '-'],[INFIX_OP, '+'], [LITERAL, 1]]],    // Notice that "INFIX_OP" is not quite right...
 
   ];
