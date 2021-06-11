@@ -93,13 +93,14 @@ numbers, strings, true, false, Arrays - ie `[1,2]`, Objects - ie `{one: 1}` or `
 
 ### Other features
 The following features are supported:  
-Grouping with parenthesis, unary plus, unary minus, member access - ie `obj.firstName`
-
-The following are not - but I'm working on it:  
-- Computed member access, ie `obj['firstName']`
+Grouping with parenthesis, unary plus, unary minus, member access - ie `obj.color` and `object['colo' + 'r']`
 
 The following are not - by intention:  
 - running other functions than those you add
 - accessing other variables than those you set
 - changing variables "from within" - so: no operators that makes assignments (++, --, =, etc)
 - function constructors
+
+### Known bugs
+- avoid starting identifiers with reserved words. `voidish(2)` will fail
+- avoid mixing dynamic and static object accessors. `obj["address"].street` fails. `obj["address"]["street"]` and `obj.address.street` is ok

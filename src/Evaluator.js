@@ -96,10 +96,9 @@ export class Evaluator {
         stack.push(result);
         //console.log('Performed infix op:', a, b, tokenValue, 'result:', result, 'stack:', stack);
       } else if (Tokenizer.isPrefix(token)) {
-        a = stack.pop();
-        let result = Evaluator.ops[tokenValue](a);
-        stack.push(result);
-        //console.log('Performed prefix op:', a, tokenValue, 'result:', result, 'stack:', stack);
+        stack.push(
+          Evaluator.ops[tokenValue](stack.pop())
+        );
       } else if (token[0] == IDENTIFIER) {
         if (i<rpnTokens.length-1) {
           let nextToken = rpnTokens[i+1];
@@ -135,7 +134,18 @@ export class Evaluator {
           if (bracket[1] != '[') {
             throw Error('Bracket mismatch');
           }
-          stack.push(items);
+          if (bracket[2]) {
+            let bracketToken = bracket[2];
+            let bracketOp = bracketToken[1];
+            if (Tokenizer.isInfix(bracketToken)) {
+              stack.push(
+                Evaluator.ops[bracketOp](stack.pop(), items[0])
+              );
+            }
+
+          } else {
+            stack.push(items);
+          }
         } else if (tokenValue == '}') {
           if (bracket[1] != '{') {
             throw Error('Curly bracket mismatch');

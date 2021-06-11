@@ -37,6 +37,7 @@ describe('Evaluator: Basic evaluation', () => {
     ['2+(-7*3)', -19],
     ['typeof -1', 'number'],   // both are right associative
     ['~!false', -2],   // both are right associative. ~!false => ~true => -2
+    ['2+-1', 1],
     //['void 0', 'number'],   // We removed void
   ];
 
@@ -174,6 +175,7 @@ describe('Evaluator: Object constructor', () => {
     ['{"one":1, "two":2}', {'one':1, 'two':2}],
     ['{one:1}', {one:1}],
     ['{"two":1+1}', {two:2}],
+    //['{"p":{"sub":2}}.one', {"sub":2}],    // TODO: FAILS!
   ];
 
   tests.forEach(arr => {
@@ -194,8 +196,29 @@ describe('Evaluator: Object constructor', () => {
 
 describe('Evaluator: property accessor', () => {
 
+  let variables = {
+    'obj': {"color":"green"},
+    'obj2': {"one":{"two":"2"}},
+    'obj3': {"one":{"two":{"three": 'abc'}}},
+    'arr': ['one', 'two'],
+  }
+
   let tests = [
     ['{"one":1}.one', 1],
+    ['obj.color', "green"],
+    ['(obj).color', "green"],
+    ['obj2.one', {"two":2}],
+    ['obj2.one.two', 2],
+    ['obj3.one.two.three', 'abc'],
+    ['arr[0]', 'one'],
+    ['(arr)[0]', 'one'],
+
+    // dynamic
+    ['obj2["one"]["two"]', 2],
+    ['obj["color"]', "green"],
+    ['obj["co" + "lor"]', "green"],
+    ['arr[obj2["one"]["two"]-1]', 'two'],
+    //['obj3.one["two"].three', 'abc'],   // TODO!
   ];
 
   tests.forEach(arr => {
@@ -206,7 +229,7 @@ describe('Evaluator: property accessor', () => {
     let tokensRpn = Parser.parse(tokens);
     //console.log('rpn: ', tokensRpn);
 
-    let result = Evaluator.evaluate(tokensRpn);
+    let result = Evaluator.evaluate(tokensRpn, {'variables':variables});
     it(s + ' => ' + JSON.stringify(expectedResult), () => {
       assert.deepEqual(result, expectedResult);
     });
@@ -237,6 +260,38 @@ describe('Evaluator: ternary operator', () => {
     //console.log('rpn: ', tokensRpn);
 
     let result = Evaluator.evaluate(tokensRpn);
+    it(s + ' => ' + JSON.stringify(expectedResult), () => {
+      assert.deepEqual(result, expectedResult);
+    });
+  });
+});
+
+
+describe('Evaluator: Misc', () => {
+
+  let variables = {
+    'imageType': 'png',
+    'options': {method:3, quality:85},
+  }
+
+  let tests = [
+    ['options["method"] == 3', true],
+    ['options["method"] == 2', false],
+    ['imageType == "png"', true],
+    ['(imageType == "png") && (options["method"] > 2)', true],
+    ['(imageType == "png") && (options["method"] > 3)', false],
+    ['(imageType == "jpeg") && (options["method"] > 2)', false],
+  ];
+
+  tests.forEach(arr => {
+    let s = arr[0];
+    let expectedResult = arr[1];
+
+    let tokens = Tokenizer.tokenize(s);
+    let tokensRpn = Parser.parse(tokens);
+    //console.log('rpn: ', tokensRpn);
+
+    let result = Evaluator.evaluate(tokensRpn, {'variables':variables});
     it(s + ' => ' + JSON.stringify(expectedResult), () => {
       assert.deepEqual(result, expectedResult);
     });

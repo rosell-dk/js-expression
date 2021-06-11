@@ -93,6 +93,23 @@ export class Parser {
       }
     }
 
+    // Alter GROUPING_BEGIN tokens, adding extra item, which tells evaluator what to do with the group
+    // Ie for dynamic property accessors, the token is altered to: [GROUPING_BEGIN, '[', [INFIX_OP, '.']]
+    for (let pointer=0; pointer<tokens.length; pointer++) {
+      token = tokens[pointer];
+      if (token[0] == GROUPING_BEGIN) {
+        let prevToken = (pointer==0 ? null : tokens[pointer-1]);
+        let afterExpression = ((prevToken != null) && (!Tokenizer.isOperator(prevToken)) && (prevToken[0] != GROUPING_BEGIN) && (prevToken[1] != ','));
+
+        if (token[1] == '[') {
+          if (afterExpression) {
+            token.push([INFIX_OP, '.']);
+          }
+        }
+      }
+    }
+
+
     loop1:
     for (let pointer=0; pointer<tokens.length; pointer++) {
       iterations++;

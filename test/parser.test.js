@@ -1,8 +1,8 @@
-import { Tokenizer }  from '../src/Tokenizer.js'
+import { Tokenizer, FUNCTION_CALL, FUNCTION_CALL_NO_ARGS, LITERAL, INFIX_OP, PREFIX_OP, IDENTIFIER, GROUPING_BEGIN, GROUPING_END }  from '../src/Tokenizer.js'
 import { Parser }  from '../src/Parser.js'
 
 import assert from 'assert'
-
+/*
 
 describe('PARSER: Misc parsing into Rpn', () => {
   let tests = [
@@ -39,7 +39,8 @@ describe('PARSER: Misc parsing into Rpn', () => {
     ['myFunc(1)', [1,'myFunc']],
     ['myFunc(1,2)', [1, 2, ',', 'myFunc']],
     ['myFunc(1,2,3)', [1, 2, ',', 3, ',', 'myFunc']],
-    ['obj.name', ['obj', 'name', '.']],
+    ['obj.color', ['obj', 'color', '.']],
+    ['obj["color"]', ['obj', '[', 'color', ']']],
   ];
 
   tests.forEach(arr => {
@@ -53,6 +54,38 @@ describe('PARSER: Misc parsing into Rpn', () => {
 
     it(s + ' => ' + expectedTokenValues.join(' '), () => {
       assert.deepEqual(tokenValuesRpn, expectedTokenValues);
+    });
+  });
+});
+*/
+
+describe('PARSER: Misc parsing 2', () => {
+  let tests = [
+    /*
+    ['a[]', [ [IDENTIFIER, 'a'], [GROUPING_BEGIN, '[', [INFIX_OP, '.']], [GROUPING_END, ']']]],  // NOTE the added INFIX_OP
+    ['[]', [ [GROUPING_BEGIN, '['], [GROUPING_END, ']']]],  // No added INFIX_OP, as this is not a property accessor
+    ['a.b', [ [IDENTIFIER, 'a'], [IDENTIFIER, 'b'], [INFIX_OP, '.'] ]],
+    ['a["b"]', [ [IDENTIFIER, 'a'], [GROUPING_BEGIN, '[', [INFIX_OP, '.']], [LITERAL,'b'], [GROUPING_END, ']'] ]],
+    ['a["b"+"c"]', [ [IDENTIFIER, 'a'], [GROUPING_BEGIN, '[', [INFIX_OP, '.']], [LITERAL, 'b'], [LITERAL, 'c'], [INFIX_OP, '+'], [GROUPING_END, ']'] ]],
+    ['a.b.c', [ [IDENTIFIER, 'a'], [IDENTIFIER, 'b'], [INFIX_OP, '.'], [IDENTIFIER, 'c'], [INFIX_OP, '.'] ]],
+    ['a[0]', [ [IDENTIFIER, 'a'], [GROUPING_BEGIN, '[', [INFIX_OP, '.']], [LITERAL,0], [GROUPING_END, ']'] ]],
+    */
+    ['a+[0]', [ [IDENTIFIER, 'a'], [GROUPING_BEGIN, '['], [LITERAL,0], [GROUPING_END, ']'], [INFIX_OP, '+'] ]],
+    //['a[0][1]', [[IDENTIFIER, 'a'], [GROUPING_BEGIN, '['], [LITERAL,0], [GROUPING_END, ']'], [GROUPING_BEGIN, '['], [LITERAL,1], [GROUPING_END, ']']]],
+    //['a([])', [ [GROUPING_BEGIN, '['], [GROUPING_END, ']'], [FUNCTION_CALL, 'a']]],
+  ];
+
+  tests.forEach(arr => {
+    let s = arr[0];
+    let expectedTokenValues = arr[1];
+
+    let tokens = Tokenizer.tokenize(s);
+    let tokensRpn = Parser.parse(tokens);
+    //console.log('rpn', tokensRpn);
+    //let tokenValuesRpn = tokensRpn.map(function(a) {return a[1]});
+
+    it(s + ' => ' + JSON.stringify(expectedTokenValues), () => {
+      assert.deepEqual(tokensRpn, expectedTokenValues);
     });
   });
 });
