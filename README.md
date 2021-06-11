@@ -1,9 +1,8 @@
 # js-expression
 
-This library allows you to tokenize, parse and evaluate javascript expressions. No eval()!
+This library allows you to tokenize, parse and evaluate javascript expressions. No more, no less. No eval()!
 
-*Although the library is functional, it is not quite ready for production*. But cheer up. I got this far in less than a week and I'm eager to finish it!
-
+Note: Although the library is functional, it is not *quite* ready for production. Soon, my friend.
 
 ## Usage:
 
@@ -46,6 +45,8 @@ Converts a string to tokens. A token consists of type information and value.
 | *       | [INFIX_OP, "*"]   |
 | !       | [PREFIX_OP, "!"]  |
 
+Tokonization time is O(n)
+
 ### Parser
 The parser parses tokens into a rpn list ([reverse polish notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation)). Such a list is very suited for being evaluated.
 
@@ -65,6 +66,8 @@ Note 2: Actual output is array of tokens, not array of string.
 
 The parser also gets rid of parenthesis. And it also handles unary minus (which it transposes to "+/-") and unary plus (which it removes)
 
+Parsing time is O(n*n)
+
 ### Evaluator
 The evaluator evaluates the tokens and operators in the rpn list.
 
@@ -74,6 +77,8 @@ The evaluator evaluates the tokens and operators in the rpn list.
 | [7, 1, '+']  | 8                   |
 
 Note: actual input must be array of tokens, not array of string, as the example could lead you to think
+
+Evaluation time is O(n)
 
 ### Expression
 Pulls it all together. It takes care of parsing before evaluating and makes sure not to parse again upon subsequent evaluations.
