@@ -33,7 +33,7 @@ let result = e.evaluate();   // evaluates to 6
 ```
 
 ## How it works
-The library contains three engines, each in a class of its own, and a class pulling it together for convenience.
+The library contains three engines: (*Tokenizer*, *Parser* and *Evaluator*), each in a class of its own, and the *Expression* class, which is for convenience.
 
 ### Tokenizer
 Converts a string to tokens. A token consists of type information and value.
@@ -43,7 +43,7 @@ Converts a string to tokens. A token consists of type information and value.
 | in      | out               |
 | ------- | ----------------- |
 | 7       | [LITERAL, 7]      |
-| +       | [INFIX_OP, "+"]   |
+| *       | [INFIX_OP, "*"]   |
 | !       | [PREFIX_OP, "!"]  |
 
 ### Parser
@@ -63,7 +63,7 @@ The parser parses tokens into a rpn list ([reverse polish notation](https://en.w
 Note 1: Actual input must be array of tokens, not a string. For example [[LITERAL, 7], [INFIX_OP, "+"], [LITERAL, 1]] rather than "7+1"  
 Note 2: Actual output is array of tokens, not array of string.
 
-The parser also gets rid of parenthesis. And it also handles unary minus and plus, which it transposes to "+/-" and "+/+", see above.
+The parser also gets rid of parenthesis. And it also handles unary minus (which it transposes to "+/-") and unary plus (which it removes)
 
 ### Evaluator
 The evaluator evaluates the tokens and operators in the rpn list.
