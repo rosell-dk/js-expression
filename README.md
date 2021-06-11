@@ -2,7 +2,7 @@
 
 This library allows you to tokenize, parse and evaluate javascript expressions. No eval()!
 
-*Although the library is functional, it is not ready for production*. But cheer up. I got this far in less than a week and I'm eager to finish it!
+*Although the library is functional, it is not quite ready for production*. But cheer up. I got this far in less than a week and I'm eager to finish it!
 
 
 ## Usage:
@@ -104,3 +104,6 @@ The following are not - by intention:
 ### Known bugs
 - avoid starting identifiers with reserved words. `voidish(2)` will fail
 - avoid mixing dynamic and static object accessors. `obj["address"].street` fails. `obj["address"]["street"]` and `obj.address.street` is ok
+
+## Why did I create this?
+I needed something like this, but couldn't find exactly what I needed out there. And the challenge seemed like fun (and turned out to be). Had the basic engines running in three days and spent another three days implementing unary plus/minus, object/array literals, object accessors and the ternary operator.
