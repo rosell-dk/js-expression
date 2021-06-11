@@ -90,7 +90,7 @@ The following operators are supported:
 `,`, `?`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`, `typeof`, `void`, `.`
 
 The following are not:  
-`yield`, `new`, `?.`
+`yield`, `new`, `?.` and operators that makes assignments (=, ++, --, etc)
 
 ### Literals
 All literals are supported. More specifically:
@@ -100,11 +100,13 @@ numbers, strings, true, false, Arrays - ie `[1,2]`, Objects - ie `{one: 1}` or `
 The following features are supported:  
 Grouping with parenthesis, unary plus, unary minus, member access - ie `obj.color` and `object['colo' + 'r']`
 
-The following are not - by intention:  
+The following are not:  
 - running other functions than those you add
 - accessing other variables than those you set
-- changing variables "from within" - so: no operators that makes assignments (++, --, =, etc)
+- changing supplied variables "from within" (no operators that makes assignments)
 - function constructors
+- semicolon
+- comments
 
 ### Known bugs
 - Mixing of dynamic and static property accessors in some cases fails. For now, avoid ie `obj["address"].street` and instead go with  `obj["address"]["street"]` or `obj.address.street`.
