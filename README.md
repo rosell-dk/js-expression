@@ -102,7 +102,7 @@ The following are not - by intention:
 - function constructors
 
 ### Known bugs
-- avoid mixing dynamic and static object accessors. `obj["address"].street` fails. `obj["address"]["street"]` and `obj.address.street` is ok
+- Mixing of dynamic and static property accessors in some cases fails. For now, avoid ie `obj["address"].street` and instead go with  `obj["address"]["street"]` or `obj.address.street`.
 
 ## Why did I create this?
 I needed something like this, but couldn't find exactly what I needed out there. And the challenge seemed like fun (and turned out to be). Had the basic engines running in three days and spent another three days implementing unary plus/minus, object/array literals, object accessors and the ternary operator.
