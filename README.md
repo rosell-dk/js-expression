@@ -15,13 +15,13 @@ let result = e.evaluate();   // evaluates to 6
 Variables can be added like this:
 
 ```javascript
-let e = new Expression('shoeSize + 2');
+let e = new Expression('shoeSize + 1');
 e.setVariable('shoeSize', 10);
-let result = e.evaluate();   // evaluates to 12
+let result = e.evaluate();   // evaluates to 11
 
 // Changing a variable does not trigger reparsing, just reevaluation:
-e.setVariable('shoeSize', 12);
-newResult = e.evaluate();    // now evaluates to 12
+e.setVariable('shoeSize', 20);
+newResult = e.evaluate();    // now evaluates to 21
 ```
 
 Functions can be added like this:
