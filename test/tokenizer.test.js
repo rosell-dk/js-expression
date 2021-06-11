@@ -84,19 +84,35 @@ describe('Tokenizer: Groupings', () => {
 
 });
 
+describe('Tokenizer: Unary plus/minus', () => {
+  let miscTests = [
+    ['true+1', [ [LITERAL,true],[INFIX_OP, '+'],[LITERAL, 1] ]],
+    ['true-1', [ [LITERAL,true],[INFIX_OP, '-'],[LITERAL, 1] ]],
+    ['- -1', [ [PREFIX_OP, '-'],[PREFIX_OP, '-'],[LITERAL, 1] ]],
+    ['+ +1', [ [PREFIX_OP, '+'],[PREFIX_OP, '+'],[LITERAL, 1] ]],   // tokenizer keeps unary + (parser deletes it)
+    ['2+-1', [ [LITERAL, 2],[INFIX_OP, '+'],[PREFIX_OP, '-'],[LITERAL, 1] ]],
+    ['[-1]', [ [GROUPING_BEGIN, '['],[PREFIX_OP, '-'],[LITERAL, 1], [GROUPING_END, ']'] ]],
+    ['a(-1, -b)', [ [GROUPING_BEGIN, '('],[PREFIX_OP, '-'],[LITERAL, 1],[PREFIX_OP, '-'],[IDENTIFIER, 'b'], [GROUPING_END, ')'], [FUNCTION_CALL, 'a'] ]],
+  ];
+
+  miscTests.forEach(arr => {
+    let s = arr[0];
+    let expectedTokens = arr[1];
+    it(s + ' resolves to: ' + JSON.stringify(expectedTokens), () => {
+      assert.deepEqual(Tokenizer.tokenize(s), expectedTokens);
+    });
+  });
+
+});
 
 describe('Tokenizer: Misc', () => {
   let miscTests = [
     ['name', [[IDENTIFIER,'name']]],
     ['name_2R', [[IDENTIFIER,'name_2R']]],
     ['name["firstName"]', [[IDENTIFIER,'name'],[GROUPING_BEGIN,'['],[LITERAL,'firstName'],[GROUPING_END,']']]],
-    ['true+1', [[LITERAL,true],[INFIX_OP, '+'],[LITERAL, 1]]],
-    ['true-1', [[LITERAL,true],[INFIX_OP, '-'],[LITERAL, 1]]],
     ['7*4', [[LITERAL,7],[INFIX_OP, '*'],[LITERAL, 4]]],
     ['7&&&4', [[LITERAL,7],[INFIX_OP, '&&'],[INFIX_OP, '&'],[LITERAL, 4]]],
     ['doit(3)', [[FUNCTION_CALL,'doit'],[GROUPING_BEGIN,'('],[LITERAL,3],[GROUPING_END,')']]],
-    ['- -1', [[PREFIX_OP, '-'],[PREFIX_OP, '-'],[LITERAL, 1]]],
-    ['+ +1', [[PREFIX_OP, '+'],[PREFIX_OP, '+'],[LITERAL, 1]]],   // tokenizer keeps unary + (parser deletes it)
     ['{}', [[GROUPING_BEGIN, '{'],[GROUPING_END, '}']]],
     ['{lname: "rosell"}', [[GROUPING_BEGIN, '{'],[LITERAL,'lname'],[INFIX_OP,':'],[LITERAL,'rosell'],[GROUPING_END,'}']]],
     ['{"lname": "rosell"}', [[GROUPING_BEGIN, '{'],[LITERAL,'lname'],[INFIX_OP,':'],[LITERAL,'rosell'],[GROUPING_END,'}']]],

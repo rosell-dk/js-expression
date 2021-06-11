@@ -6,7 +6,6 @@ export const GROUPING_BEGIN = -6;
 export const GROUPING_END = -7;
 export const INFIX_OP = -11;
 export const PREFIX_OP = -12;
-export const OBJ = -12;
 
 export class Tokenizer {
 
@@ -144,7 +143,7 @@ export class Tokenizer {
     // TODO: Not LITERAL, but perhaps some better name. And perhaps IDENTIFIER is fine, and
     // the thing should be handled in Parser or Evaluator
     let groups = [];
-    
+
     for (let pointer=0; pointer<tokens.length; pointer++) {
       token = tokens[pointer];
       if (token[0] == GROUPING_BEGIN) {
@@ -164,8 +163,11 @@ export class Tokenizer {
     for (let pointer=0; pointer<tokens.length; pointer++) {
       token = tokens[pointer];
       let prevToken = (pointer==0 ? null : tokens[pointer-1]);
+
       if ((token[0] == INFIX_OP) && ((token[1] == '-') || (token[1] == '+'))) {
-        if ((prevToken == null) || (prevToken[0] == GROUPING_BEGIN) || (prevToken[1] == ',') || (prevToken[0] == PREFIX_OP)) {
+        //if ((prevToken == null) || (prevToken[0] == GROUPING_BEGIN) || (prevToken[1] == ',') || (prevToken[0] == PREFIX_OP)) {
+        let afterExpression = ((prevToken != null) && (!Tokenizer.isOperator(prevToken)) && (prevToken[0] != GROUPING_BEGIN) && (prevToken[1] != ','));
+        if (!afterExpression) {
           token[0] = PREFIX_OP;
         }
       }
