@@ -44,33 +44,22 @@ export class Tokenizer {
     // An item may also supply a function for transposing the token value
     // Lookahead can be defined with a second parenthesis in the regex. The lookahead is only used in the function calls
     // - we want "something()" to be turned into three tokens, so we don't want to eat the "()" part.
-
+    // Special keywords that looks like IDENTIFIERS, are corrected after the regexes
     var regExes = [
 
       // function call without arguments
-      [FUNCTION_CALL_NO_ARGS, /^([a-zA-Z_$1-9]+)\(\s*\)/],
+      [FUNCTION_CALL_NO_ARGS, /^([a-zA-Z_$][a-zA-Z_$1-9]*)\(\s*\)/],
 
       // function call
-      [FUNCTION_CALL, /^([a-zA-Z_$1-9]+)(\()/],
+      [FUNCTION_CALL, /^([a-zA-Z_$][a-zA-Z_$1-9]*)(\()/],
 
       // infix operator
       // +, -, *, /, %, &, |, ^, !, &&, ||, =, !=, ==, !==, ===, >, <, >=, >=, **, ??, ?, <<, >>, >>>, :, ~, . and comma (,)
+      // + and - are corrected to PREFIX_OP later, when they are not succeding an expression
       [INFIX_OP, /^([\<]{2}|[\>]{2,3}|[\*]{1,2}|[\?]{1,2}|[\&]{1,2}|[\|]{1,2}|[\=]{2,3}|[\!][\=]{1,2}|[\>\<][\=]|[\+\-\/\%\|\^\>\<\=\,\:\.])/],
 
-      // prefix operator: !, ~, typeof, void
-      [PREFIX_OP, /^([\!\~]|typeof|void)/],
-
-      // boolean
-      [LITERAL, /^(true|false)/, a => (a == 'true')],
-
-      // null
-      [LITERAL, /^(null)/, a => null],
-
-      // undefined
-      [LITERAL, /^(undefined)/, a => undefined],
-
-      // NaN
-      [LITERAL, /^(NaN)/, a => NaN],
+      // prefix operator: !, ~, (typeof and void are handled later)
+      [PREFIX_OP, /^([\!\~])/],
 
       // number
       [LITERAL, /^([-+]{0,1}(?:(?:[0-9]+[.][0-9]+)|(?:[0-9]+)))/, a => parseFloat(a)],
@@ -82,7 +71,7 @@ export class Tokenizer {
       [LITERAL, /^"((?:(\\")|[^"])*)"/],
 
       // variable  (acually, identifier - https://developer.mozilla.org/en-US/docs/Glossary/Identifier)
-      [IDENTIFIER, /^([a-zA-Z$_1-9]+)/],
+      [IDENTIFIER, /^([a-zA-Z_$][a-zA-Z_$1-9]*)/],
 
       // Group begin - (left pare / left bracket / left curly bracket)
       [GROUPING_BEGIN, /^([\(\[\{])/],
@@ -90,14 +79,6 @@ export class Tokenizer {
       // Group end (right paren / right bracket / right curly bracket)
       [GROUPING_END, /^([\)\]\}])/],
 
-      // ternary
-      //[TERNARY, /^([\?])/],
-
-      // colon (part of ternary expression or )
-      //[COLON, /^([\:])/],
-
-      // TODO:
-      // Object literals, array litterals
     ]
 
     var i=0;
@@ -139,6 +120,31 @@ export class Tokenizer {
     }
 
     let token;
+
+    // Handle special keywords that was wrongly catagorized as IDENTIFIER
+    let special = {
+      'NaN': [LITERAL, NaN],
+      'undefined': [LITERAL, undefined],
+      'void': [PREFIX_OP, 'void'],
+      'typeof': [PREFIX_OP, 'typeof'],
+      'null': [LITERAL, null],
+      'true': [LITERAL, true],
+      'false': [LITERAL, false],
+    }
+    for (let pointer=0; pointer<tokens.length; pointer++) {
+      token = tokens[pointer];
+      let changeTo = null;
+
+      if (token[0] == IDENTIFIER) {
+        let replacement = special[token[1]];
+        if (replacement) {
+          token[0] = replacement[0];
+          token[1] = replacement[1];
+        }
+      }
+    }
+
+
     // Transform IDENTIFIER inside literal objects into strings. Ie: {a:10} - "a" should be LITERAL
     // TODO: Not LITERAL, but perhaps some better name. And perhaps IDENTIFIER is fine, and
     // the thing should be handled in Parser or Evaluator

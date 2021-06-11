@@ -102,7 +102,6 @@ The following are not - by intention:
 - function constructors
 
 ### Known bugs
-- avoid starting identifiers with reserved words. `voidish(2)` will fail
 - avoid mixing dynamic and static object accessors. `obj["address"].street` fails. `obj["address"]["street"]` and `obj.address.street` is ok
 
 ## Why did I create this?
