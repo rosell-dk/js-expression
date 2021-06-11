@@ -92,7 +92,7 @@ describe('Tokenizer: Unary plus/minus', () => {
     ['+ +1', [ [PREFIX_OP, '+'],[PREFIX_OP, '+'],[LITERAL, 1] ]],   // tokenizer keeps unary + (parser deletes it)
     ['2+-1', [ [LITERAL, 2],[INFIX_OP, '+'],[PREFIX_OP, '-'],[LITERAL, 1] ]],
     ['[-1]', [ [GROUPING_BEGIN, '['],[PREFIX_OP, '-'],[LITERAL, 1], [GROUPING_END, ']'] ]],
-    ['a(-1, -b)', [ [GROUPING_BEGIN, '('],[PREFIX_OP, '-'],[LITERAL, 1],[PREFIX_OP, '-'],[IDENTIFIER, 'b'], [GROUPING_END, ')'], [FUNCTION_CALL, 'a'] ]],
+    ['a(-1, -b)', [ [FUNCTION_CALL, 'a'],[GROUPING_BEGIN, '('],[PREFIX_OP, '-'],[LITERAL, 1],[INFIX_OP, ','],[PREFIX_OP, '-'],[IDENTIFIER, 'b'], [GROUPING_END, ')'] ]],
   ];
 
   miscTests.forEach(arr => {
