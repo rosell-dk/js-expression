@@ -55,12 +55,22 @@ describe('Adding custom function', () => {
 
   let e = new Expression('tripple(2)');
   e.addFunction('tripple', (n) => n*3)
+  let firstResult = e.evaluate();
+
+  // redefine expression (toggles reparse)
+  e.setExpression('tripple(2)+1');
+  let secondResult = e.evaluate();
+
   it('Added "tripple" function and tripple(2) evaluates to 6', () => {
-    assert.equal(e.evaluate(), '6');
+    assert.equal(firstResult, '6');
+  });
+  it('Changed expression to "tripple(2)+", it now evaluates to 7', () => {
+    assert.equal(secondResult, '7');
   });
 
-  let e2 = new Expression('tripple(2)');
+  let e2 = new Expression();
   e2.addFunction('tripple', (n) => n*3);
+  e2.setExpression('tripple(2)');
   e2.evaluate();
   e2.setFunctions(
     {'tripple': (n) => n.toString() + n.toString() + n.toString()}

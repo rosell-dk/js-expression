@@ -3,15 +3,19 @@ import { Parser }  from '../src/Parser.js'
 import { Evaluator }  from '../src/Evaluator.js'
 
 export class Expression {
-  constructor(expression) {
-    this.tokens = null;
-    this.rpn = null;
-    this.expression = expression;
+  constructor(expression = '') {
+    this.setExpression(expression);
+
     this.extra = {
       'functions': {},
       'variables': {}
     }
+  }
 
+  setExpression(expression = '') {
+    this.expression = expression;
+    this.tokens = null;
+    this.rpn = null;
   }
 
   tokenize() {
