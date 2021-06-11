@@ -91,10 +91,15 @@ The following operators are supported:
 
 The following are not:  
 `yield`, `new`, `?.` and operators that makes assignments (=, ++, --, etc)
+`in` and `instanceof` (forgot about those - will be added monday)
+
 
 ### Literals
-All literals are supported. More specifically:
+The following literals are supported:  
 numbers, strings, true, false, Arrays - ie `[1,2]`, Objects - ie `{one: 1}` or `{'one': 1}`, undefined, null, NaN
+
+The following are not:  
+Regular expressions
 
 ### Other features
 The following features are supported:  
@@ -110,6 +115,17 @@ The following are not:
 
 ### Known bugs
 - Mixing of dynamic and static property accessors in some cases fails. For now, avoid ie `obj["address"].street` and instead go with  `obj["address"]["street"]` or `obj.address.street`.
+- Array constructors cannot take empty places, like: [1,,2]
+- Literal numbers not fully supported (only decimal base, no exp). [number spec here](https://www.w3resource.com/javascript/variables-literals/literals.php)
+
+## Whats out there, besides this?
+- [js-tokens](https://github.com/lydell/js-tokens#punctuator) - If you need complete tokenization and don't need parsing or evaluation.
+- [Javascript Calc Interpreter](https://www.npmjs.com/package/javascript-calc-interpreter) - If focus is on the math, not javascript
+- [safe-eval](https://www.npmjs.com/package/safe-eval) - If you only need to run it on node (or don't mind the huge node.vm module being packaged into your build)
+- [simple-expression-parsing](https://www.npmjs.com/package/simple-expression-parsing])
+- [fastparse](https://www.npmjs.com/package/fastparse)
+- [jsep](https://github.com/EricSmekens/jsep)
+- [expresssionparser](https://www.npmjs.com/package/expressionparser) - Its language is "formula", but new languages can be added. I actually tried adding javascript like this, but it turned out the machine wasn't flexible enough for things like object litterals, ternary operator and unary minus.
 
 ## Why did I create this?
 I needed something like this, but couldn't find exactly what I needed out there. And the challenge seemed like fun (and turned out to be). Had the basic engines running in three days and spent another three days implementing unary plus/minus, object/array literals, object accessors and the ternary operator.
