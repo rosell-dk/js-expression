@@ -82,10 +82,10 @@ Pulls it all together. It takes care of parsing before evaluating and makes sure
 
 ### Operators
 The following operators are supported:  
-`,`, `?`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`, `typeof`, `.`
+`,`, `?`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`, `typeof`, `void`, `.`
 
 The following are not:  
-`yield`, `void`, `new`, `?.`
+`yield`, `new`, `?.`
 
 ### Literals
 All literals are supported. More specifically:

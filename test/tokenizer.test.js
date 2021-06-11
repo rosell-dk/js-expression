@@ -35,6 +35,9 @@ describe('Tokenizer: Operators (prefix)', () => {
   it('typeof is a prefix operator', () => {
     assert.deepEqual(Tokenizer.tokenize('typeof'), [[PREFIX_OP, 'typeof']]);
   });
+  it('void is a prefix operator', () => {
+    assert.deepEqual(Tokenizer.tokenize('void'), [[PREFIX_OP, 'void']]);
+  });
 });
 
 describe('Tokenizer: Operators (infix)', () => {

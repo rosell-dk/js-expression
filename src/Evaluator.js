@@ -55,6 +55,7 @@ export class Evaluator {
     '+/+': (a) => a,
     'typeof': (a) => typeof a,
     '.': (a, b) => a[b],
+    'void': (a) => void a,
   };
 
   static functions = {

@@ -2,7 +2,7 @@ import { Tokenizer, FUNCTION_CALL, FUNCTION_CALL_NO_ARGS, LITERAL, INFIX_OP, PRE
 import { Parser }  from '../src/Parser.js'
 
 import assert from 'assert'
-/*
+
 
 describe('PARSER: Misc parsing into Rpn', () => {
   let tests = [
@@ -57,11 +57,11 @@ describe('PARSER: Misc parsing into Rpn', () => {
     });
   });
 });
-*/
+
 
 describe('PARSER: Misc parsing 2', () => {
   let tests = [
-    /*
+
     ['a[]', [ [IDENTIFIER, 'a'], [GROUPING_BEGIN, '[', [INFIX_OP, '.']], [GROUPING_END, ']']]],  // NOTE the added INFIX_OP
     ['[]', [ [GROUPING_BEGIN, '['], [GROUPING_END, ']']]],  // No added INFIX_OP, as this is not a property accessor
     ['a.b', [ [IDENTIFIER, 'a'], [IDENTIFIER, 'b'], [INFIX_OP, '.'] ]],
@@ -69,10 +69,10 @@ describe('PARSER: Misc parsing 2', () => {
     ['a["b"+"c"]', [ [IDENTIFIER, 'a'], [GROUPING_BEGIN, '[', [INFIX_OP, '.']], [LITERAL, 'b'], [LITERAL, 'c'], [INFIX_OP, '+'], [GROUPING_END, ']'] ]],
     ['a.b.c', [ [IDENTIFIER, 'a'], [IDENTIFIER, 'b'], [INFIX_OP, '.'], [IDENTIFIER, 'c'], [INFIX_OP, '.'] ]],
     ['a[0]', [ [IDENTIFIER, 'a'], [GROUPING_BEGIN, '[', [INFIX_OP, '.']], [LITERAL,0], [GROUPING_END, ']'] ]],
-    */
+
     ['a+[0]', [ [IDENTIFIER, 'a'], [GROUPING_BEGIN, '['], [LITERAL,0], [GROUPING_END, ']'], [INFIX_OP, '+'] ]],
-    //['a[0][1]', [[IDENTIFIER, 'a'], [GROUPING_BEGIN, '['], [LITERAL,0], [GROUPING_END, ']'], [GROUPING_BEGIN, '['], [LITERAL,1], [GROUPING_END, ']']]],
-    //['a([])', [ [GROUPING_BEGIN, '['], [GROUPING_END, ']'], [FUNCTION_CALL, 'a']]],
+    ['a[0][1]', [[IDENTIFIER, 'a'], [GROUPING_BEGIN, '[', [INFIX_OP, '.']], [LITERAL,0], [GROUPING_END, ']'], [GROUPING_BEGIN, '[', [INFIX_OP, '.']], [LITERAL,1], [GROUPING_END, ']']]],
+    ['a([])', [ [GROUPING_BEGIN, '['], [GROUPING_END, ']'], [FUNCTION_CALL, 'a']]],
   ];
 
   tests.forEach(arr => {

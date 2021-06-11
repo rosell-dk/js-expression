@@ -38,6 +38,7 @@ describe('Evaluator: Basic evaluation', () => {
     ['typeof -1', 'number'],   // both are right associative
     ['~!false', -2],   // both are right associative. ~!false => ~true => -2
     ['2+-1', 1],
+    ['void 1', undefined],
     //['void 0', 'number'],   // We removed void
   ];
 
