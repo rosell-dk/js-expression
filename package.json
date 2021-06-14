@@ -24,7 +24,11 @@
     "parser",
     "javascript",
     "js",
-    "expressions"
+    "expressions",
+    "eval",
+    "evaluate",
+    "evaluator",
+    "tokenizer"
   ],
   "author": "",
   "license": "ISC",
