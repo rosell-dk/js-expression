@@ -1,4 +1,4 @@
-# js-expr
+# js-expression
 
 This library allows you to tokenize, parse and evaluate javascript expressions. No more, no less. No eval()!
 

@@ -1,5 +1,5 @@
 {
-  "name": "js-expr",
+  "name": "@rosell/js-expression",
   "version": "0.1.0",
   "description": "Parse and evaluate javascript expressions - no evil eval",
   "type": "module",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rosell-dk/js-expr.git"
+    "url": "git+https://github.com/rosell-dk/js-expression.git"
   },
   "keywords": [
     "parser",
