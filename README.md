@@ -6,11 +6,12 @@ Includes a tokenizer, a parser and an evaluator.
 
 ## Usage:
 
-Installing:
+### Install:
 ```
 npm i @rosell/js-expression
 ```
 
+### Use
 ```javascript
 import { JsExpression } from '@rosell/js-expression';
 // or one of the following:
