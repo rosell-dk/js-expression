@@ -30,7 +30,7 @@ export class Parser {
     } else if (Tokenizer.isLiteral(token) || (token[0] == IDENTIFIER)) {
       return 100;
     }
-    throw new Error('Could not get precendce of token:', token[1]);
+    throw new Error('Could not get precedence of token:' + JSON.stringify(token));
   }
 
   static rightAssociative = [
