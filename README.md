@@ -1,6 +1,6 @@
 # js-expression
 
-This library allows you to tokenize, parse and evaluate javascript expressions. No more, no less. No eval()!
+This library allows you to tokenize, parse and evaluate javascript expressions. No more, no less. No eval. No dependencies. Only 6kb.
 
 ## Usage:
 
@@ -142,7 +142,7 @@ The following are not:
 - [jsep](https://github.com/EricSmekens/jsep)
 - [expresssionparser](https://www.npmjs.com/package/expressionparser) - Its language is "formula", but new languages can be added. I actually tried adding javascript like this, but it turned out the machine wasn't flexible enough for things like object litterals, ternary operator and unary minus.
 - [calculon](https://www.npmjs.com/package/calculon)
-- [js-expr-runner](https://www.npmjs.com/package/js-expr-runner)
+- [js-expr-runner](https://www.npmjs.com/package/js-expr-runner). Depends on lodash
 
 ## Why did I create this?
 I needed something like this, but couldn't find exactly what I needed out there. And the challenge seemed like fun (and turned out to be). Had the basic engines running in three days and spent another three days implementing unary plus/minus, object/array literals, object accessors and the ternary operator.
