@@ -6,7 +6,17 @@ Includes a tokenizer, a parser and an evaluator.
 
 ## Usage:
 
+Installing (NodeJS): `npm i @rosell/js-expression`.
+
+(You can also import *Tokenizer*, *Evaluator* and *Parser*, if you need those)
+
 ```javascript
+import { JsExpression } from '@rosell/js-expression';
+// or one of the following:
+// const { JsExpression } = require('@rosell/js-expression');   // CJS
+// import JsExpression from '@rosell/js-expression';            // ESM, just one class
+// import { JsExpression, Tokenizer, Evaluator, Parse } from '@rosell/js-expression';    // ESM, all four classes
+
 let e = new JsExpression('(1+1)*3');
 let result = e.evaluate();   // evaluates to 6
 ```
@@ -59,20 +69,6 @@ let tokenValues = tokens.map(function(a) {return a[1]});    // result: [1, '+', 
 let rpnTokens = e.parse();  // Reorders tokens to rpn (and removes parenthesises)
 let rpnTokenValues = rpnTokens.map(function(a) {return a[1]});    // result: [1, 2, '+']
 ```
-
-## Node.JS
-First run `npm i @rosell/js-expression`. Then:
-```javascript
-// ESM:
-import { JsExpression } from '@rosell/js-expression';
-
-// ESM, alternative
-import JsExpression from '@rosell/js-expression';
-
-// CJS:
-const { JsExpression } = require('@rosell/js-expression');
-```
-(You can also import *Tokenizer*, *Evaluator* and *Parser*, if you need those)
 
 ## How it works
 The library contains three engines: (*Tokenizer*, *Parser* and *Evaluator*), each in a class of its own, and the *Expression* class, which is for convenience.
