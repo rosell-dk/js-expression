@@ -32,12 +32,14 @@ export class JsExpression {
     return this.rpn;
   }
 
+  static staticVars = [];
+
   static addFunction(functionName, f) {
-    Evaluator.addFunction(functionName, f);
+    JsExpression.staticVars[functionName] = f;
   }
 
   static addConstant(name, value) {
-    Evaluator.addConstant(name, value);
+    JsExpression.staticVars[name] = value;
   }
 
 /*
@@ -59,7 +61,12 @@ export class JsExpression {
 */
 
   evaluate(vars = {}) {
-    return Evaluator.evaluate(this.parse(), vars);
+    let v = {};
+    Object.assign(v, JsExpression.staticVars);
+    Object.assign(v, vars);
+
+
+    return Evaluator.evaluate(this.parse(), v);
   }
 
 }

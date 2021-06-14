@@ -177,6 +177,41 @@ describe('parse()', () => {
   });
 });
 
+describe('Evaluator: Custom functions ("permanent" functions)', () => {
+
+  JsExpression.addFunction('equals', (a, b) => (a==b));
+  JsExpression.addFunction('double', (a) => a*2);
+  JsExpression.addFunction('seven', () => 7);
+  JsExpression.addFunction('gt', (a,b) => (a>b));
+  JsExpression.addFunction('add', (a,b) => (a+b));
+
+  let tests = [
+    ['equals(1,3)', false],
+    ['equals(1,1)', true],
+    ['double(3)', 6],
+    ['3+double(3)', 9],
+    ['seven()', 7],
+    ['7+seven()', 14],
+    ['gt(1,-1)', true],
+    ['add(-1,-2)', -3],
+    //['- -1', 1],  // TODO
+  ];
+
+  tests.forEach(arr => {
+    let s = arr[0];
+    let expectedResult = arr[1];
+
+    //let tokens = Tokenizer.tokenize(s);
+    //let tokensRpn = Parser.parse(tokens);
+    //let result = JsExpression.evaluate(tokensRpn);
+    let result = new JsExpression(s).evaluate();
+
+    it(s + ' => ' + JSON.stringify(expectedResult), () => {
+      assert.deepEqual(result, expectedResult);
+    });
+  });
+});
+
 describe('security', () => {
   it('window is undefined', () => {
     assert.equal(new JsExpression('window').evaluate(), undefined);

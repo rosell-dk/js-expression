@@ -58,32 +58,12 @@ export class Evaluator {
     'void': (a) => void a,
   };
 
-  static functions = {
-    'inArray': (arr, value) => b.inArray(a),
-  }
-
-  // Add function "permanently".
-  static addFunction(functionName, f) {
-    Evaluator.functions[functionName] = f;
-  }
-
-  static constants = {
-  }
-
-  // Add constant
-  static addConstant(name, value) {
-    Evaluator.constants[name] = value;
-  }
 
   /**
    *
    * @param object vars   Object of custom variables and functions
    */
   static evaluate(rpnTokens, vars = {}) {
-    let v = {}
-    Object.assign(v, Evaluator.functions);
-    Object.assign(v, Evaluator.constants);
-    Object.assign(v, vars);
 
     //console.log('evaluateRpn', rpnTokens);
     //console.log('evaluateRpn', rpnTokens.map(function(a) {return a[1]}));
@@ -114,12 +94,12 @@ export class Evaluator {
           }
         }
         let variableName = token[1];
-        if (!v.hasOwnProperty(variableName)) {
+        if (!vars.hasOwnProperty(variableName)) {
           //throw new Error('Variable is not defined: ' + variableName);
           stack.push(undefined);
           //stack.push(new ObjectProp(variableName));
         } else {
-          stack.push(v[variableName]);
+          stack.push(vars[variableName]);
         }
       } else if (tokenType == GROUPING_BEGIN) {
         stack.push(token);  // Yes, push the whole token
@@ -165,11 +145,11 @@ export class Evaluator {
         }
       } else if (Tokenizer.isFunctionCall(token)) {
         let functionName = token[1];
-        if (!v.hasOwnProperty(functionName)) {
+        if (!vars.hasOwnProperty(functionName)) {
           throw new Error('Function does not exist: ' + functionName);
         }
         if (token[0] == FUNCTION_CALL_NO_ARGS) {
-          stack.push(v[functionName]());
+          stack.push(vars[functionName]());
         } else {
           let popped = stack.pop();
           let arr = [];
@@ -178,7 +158,7 @@ export class Evaluator {
           } else {
             arr.push(popped);
           }
-          stack.push(v[functionName](... arr));
+          stack.push(vars[functionName](... arr));
 
         }
       }
