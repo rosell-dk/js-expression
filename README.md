@@ -7,14 +7,14 @@ Includes a tokenizer, a parser and an evaluator.
 ## Usage:
 
 ```javascript
-let e = new Expression('(1+1)*3');
+let e = new JsExpression('(1+1)*3');
 let result = e.evaluate();   // evaluates to 6
 ```
 
 Variables and function can be passed like this:
 
 ```javascript
-let e = new Expression('add(shoeSize,1)');
+let e = new JsExpression('add(shoeSize,1)');
 let result = e.evaluate({
   'shoeSize': 10,
   'add' => (a,b) => a+b
@@ -34,26 +34,26 @@ Functions and constants can be set once and for all like this:
 Expression.addFunction('substract', (a,b) => a-b);
 Expression.addConstant('PI', Math.PI);
 
-let e = new Expression('substract(PI,PI)');
+let e = new JsExpression('substract(PI,PI)');
 let result = e.evaluate();   // evaluates to 0
 ```
 
 Security:
 ```javascript
-console.log(new Expression('window').evaluate());
+console.log(new JsExpression('window').evaluate());
 // undefined
 
-console.log(new Expression('global').evaluate());
+console.log(new JsExpression('global').evaluate());
 // undefined
 
 Expression.addConstant('myString', 'hello');
-new Expression('myString.toString()').evaluate());
+new JsExpression('myString.toString()').evaluate());
 // throws "Function does not exist: toString"
 ```
 
 To only tokenize or parse, use `tokenize()` and `parse()`. Example:
 ```javascript
-let e = new Expression('1+2');
+let e = new JsExpression('1+2');
 let tokens = e.tokenize();  // tokens: [[LITERAL, '1'], [INFIX_OP, '+'], [LITERAL, '2']]
 let tokenValues = tokens.map(function(a) {return a[1]});    // result: [1, '+', 2]
 let rpnTokens = e.parse();  // Reorders tokens to rpn (and removes parenthesises)
@@ -64,10 +64,10 @@ let rpnTokenValues = rpnTokens.map(function(a) {return a[1]});    // result: [1,
 First run `npm i @rosell/js-expression`. Then:
 ```
 // ESM:
-import { Expression } from '@rosell/js-expression';
+import { JsExpression } from '@rosell/js-expression';
 
 // CJS:
-const { Expression } = require('@rosell/js-expression');
+const { JsExpression } = require('@rosell/js-expression');
 ```
 (You can also import *Tokenizer*, *Evaluator* and *Parser* like this, if you need those)
 
@@ -120,7 +120,7 @@ Note: actual input must be array of tokens, not array of string, as the example 
 
 Evaluation time is O(n)
 
-### Expression
+### JsExpression
 Pulls it all together. It takes care of parsing before evaluating and makes sure not to parse again upon subsequent evaluations.
 
 ## Support

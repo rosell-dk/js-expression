@@ -2,7 +2,7 @@ import { Tokenizer }  from '../src/Tokenizer.js'
 import { Parser }  from '../src/Parser.js'
 import { Evaluator }  from '../src/Evaluator.js'
 
-export class Expression {
+export class JsExpression {
   constructor(expression = '') {
     this.setExpression(expression);
 
