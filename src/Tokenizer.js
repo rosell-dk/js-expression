@@ -48,7 +48,7 @@ export class Tokenizer {
     var regExes = [
 
       // function call without arguments
-      // TODO: Functions should be tokenized as identifier and handled in Parser and Evaluator much the same way that 
+      // TODO: Functions should be tokenized as identifier and handled in Parser and Evaluator much the same way that
       // dynamic properies, such as obj['name'] are now.
       [FUNCTION_CALL_NO_ARGS, /^([a-zA-Z_$][a-zA-Z_$1-9]*)\(\s*\)/],
 
@@ -138,10 +138,12 @@ export class Tokenizer {
       let changeTo = null;
 
       if (token[0] == IDENTIFIER) {
-        let replacement = special[token[1]];
-        if (replacement) {
-          token[0] = replacement[0];
-          token[1] = replacement[1];
+        if (special.hasOwnProperty(token[1])) {
+          let replacement = special[token[1]];
+          if (replacement) {
+            token[0] = replacement[0];
+            token[1] = replacement[1];
+          }
         }
       }
     }
