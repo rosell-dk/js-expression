@@ -35,6 +35,17 @@ let e = new Expression('substract(PI,PI)');
 let result = e.evaluate();   // evaluates to 0
 ```
 
+## Node.JS
+First run `npm i @rosell/js-expression`. Then:
+```
+// ESM:
+import { Expression } from '@rosell/js-expression';
+
+// CJS:
+const { Expression } = require('@rosell/js-expression');
+```
+(You can also import *Tokenizer*, *Evaluator* and *Parser* like this, if you need those)
+
 ## How it works
 The library contains three engines: (*Tokenizer*, *Parser* and *Evaluator*), each in a class of its own, and the *Expression* class, which is for convenience.
 
