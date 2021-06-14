@@ -19,14 +19,17 @@ export class Expression {
   }
 
   tokenize() {
-    this.tokens = Tokenizer.tokenize(this.expression);
+    if (this.tokens == null) {
+      this.tokens = Tokenizer.tokenize(this.expression);
+    }
+    return this.tokens;
   }
 
   parse() {
-    if (this.tokens == null) {
-      this.tokenize();
+    if (this.rpn == null) {
+      this.rpn = Parser.parse(this.tokenize());
     }
-    this.rpn = Parser.parse(this.tokens);
+    return this.rpn;
   }
 
   static addFunction(functionName, f) {
@@ -56,10 +59,7 @@ export class Expression {
 */
 
   evaluate(vars = {}) {
-    if (this.rpn == null) {
-      this.parse();
-    }
-    return Evaluator.evaluate(this.rpn, vars);
+    return Evaluator.evaluate(this.parse(), vars);
   }
 
 }

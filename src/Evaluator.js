@@ -115,7 +115,8 @@ export class Evaluator {
         }
         let variableName = token[1];
         if (!v.hasOwnProperty(variableName)) {
-          throw new Error('Variable is not defined: ' + variableName);
+          //throw new Error('Variable is not defined: ' + variableName);
+          stack.push(undefined);
           //stack.push(new ObjectProp(variableName));
         } else {
           stack.push(v[variableName]);

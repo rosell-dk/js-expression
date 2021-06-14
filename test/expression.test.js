@@ -157,5 +157,39 @@ describe('Adding constant', () => {
     let e = new Expression('PI');
     assert.equal(e.evaluate(), Math.PI);
   });
+});
 
+describe('tokenize()', () => {
+  it('e.tokenize() returns tokens', () => {
+    let e = new Expression('1+2');
+    let tokens = e.tokenize();
+    tokens = tokens.map(function(a) {return a[1]});
+    assert.deepEqual(tokens, [1, '+', 2]);
+  });
+});
+
+describe('parse()', () => {
+  it('e.tokenize() returns tokens in rpn order', () => {
+    let e = new Expression('1+2');
+    let rpn = e.parse();
+    rpn = rpn.map(function(a) {return a[1]});
+    assert.deepEqual(rpn, [1, 2, '+']);
+  });
+});
+
+describe('security', () => {
+  it('window is undefined', () => {
+    let e = new Expression('window');
+    assert.equal(e.evaluate(), undefined);
+  });
+
+  it('global is undefined', () => {
+    let e = new Expression('global');
+    assert.equal(e.evaluate(), undefined);
+  });
+
+  it('console is undefined', () => {
+    let e = new Expression('console');
+    assert.equal(e.evaluate(), undefined);
+  });
 });

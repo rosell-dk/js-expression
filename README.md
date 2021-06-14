@@ -1,6 +1,8 @@
 # js-expression
 
-This library allows you to tokenize, parse and evaluate javascript expressions. No more, no less. No eval. No dependencies. Only 6kb.
+Evaluate javascript expressions. No eval. No dependencies. Only 6kb.
+
+Includes a tokenizer, a parser and an evaluator.
 
 ## Usage:
 
@@ -19,20 +21,30 @@ let result = e.evaluate({
 });   // evaluates to 11
 ```
 
-Btw: reevaluating does not trigger reparsing.
-```
+Revaluating is cheap as it does not trigger reparsing.
+```javascript
 let result2 = e.evaluate({
-  'shoeSize': 20
+  'shoeSize': 20,
+  'add' => (a,b) => a+b
 });   // Now evaluates to 21. And more quickly than before, as the expression has already been parsed
 ```
 
-Alternatively, functions and constants can be set once and for all like this:
+Functions and constants can be set once and for all like this:
 ```javascript
 Expression.addFunction('substract', (a,b) => a-b);
 Expression.addConstant('PI', Math.PI);
 
 let e = new Expression('substract(PI,PI)');
 let result = e.evaluate();   // evaluates to 0
+```
+
+To only tokenize or parse, use `tokenize()` and `parse()`. Example:
+```javascript
+let e = new Expression('1+2');
+let tokens = e.tokenize();  // tokens: [[LITERAL, '1'], [INFIX_OP, '+'], [LITERAL, '2']]
+let tokenValues = tokens.map(function(a) {return a[1]});    // result: [1, '+', 2]
+let rpnTokens = e.parse();  // Reorders tokens to rpn (and removes parenthesises)
+let rpnTokenValues = rpnTokens.map(function(a) {return a[1]});    // result: [1, 2, '+']
 ```
 
 ## Node.JS
