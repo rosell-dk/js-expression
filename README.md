@@ -38,6 +38,19 @@ let e = new Expression('substract(PI,PI)');
 let result = e.evaluate();   // evaluates to 0
 ```
 
+Security:
+```javascript
+console.log(new Expression('window').evaluate());
+// undefined
+
+console.log(new Expression('global').evaluate());
+// undefined
+
+Expression.addConstant('myString', 'hello');
+new Expression('myString.toString()').evaluate());
+// throws "Function does not exist: toString"
+```
+
 To only tokenize or parse, use `tokenize()` and `parse()`. Example:
 ```javascript
 let e = new Expression('1+2');

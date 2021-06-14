@@ -151,7 +151,7 @@ describe('Adding function "permanently"', () => {
 
 
 describe('Adding constant', () => {
-  Expression.addFunction("PI", Math.PI);
+  Expression.addConstant("PI", Math.PI);
 
   it('PI equals PI', () => {
     let e = new Expression('PI');
@@ -179,8 +179,7 @@ describe('parse()', () => {
 
 describe('security', () => {
   it('window is undefined', () => {
-    let e = new Expression('window');
-    assert.equal(e.evaluate(), undefined);
+    assert.equal(new Expression('window').evaluate(), undefined);
   });
 
   it('global is undefined', () => {
@@ -192,4 +191,26 @@ describe('security', () => {
     let e = new Expression('console');
     assert.equal(e.evaluate(), undefined);
   });
+
+  it('toString is undefined', () => {
+    let e = new Expression('toString');
+    assert.equal(e.evaluate(), undefined);
+  });
+
+  //Expression.addConstant("obj", {a: 'h'});
+  it('typeof obj.constructor is "function"', () => {
+    let e = new Expression('typeof obj.constructor');
+    assert.equal(e.evaluate({obj:{a:1}}), 'function');
+  });
+
+  /*
+  TODO: catch error
+  Expression.addConstant("s", "hello");
+  it('Executing methods is disallowed.', () => {
+    let e = new Expression('s.toString()');
+    assert.equal(e.evaluate(), 'function');
+  });
+  */
+
+
 });

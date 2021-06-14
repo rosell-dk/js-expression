@@ -2,7 +2,6 @@ import { Tokenizer, FUNCTION_CALL, FUNCTION_CALL_NO_ARGS, LITERAL, INFIX_OP, PRE
 
 import assert from 'assert'
 
-
 describe('Tokenizer: Literals', () => {
   let literalTests = [
     ['""', ''],
@@ -110,6 +109,7 @@ describe('Tokenizer: Unary plus/minus', () => {
 
 describe('Tokenizer: Misc', () => {
   let miscTests = [
+
     ['name', [[IDENTIFIER,'name']]],
     ['name_2R', [[IDENTIFIER,'name_2R']]],
     ['name["firstName"]', [[IDENTIFIER,'name'],[GROUPING_BEGIN,'['],[LITERAL,'firstName'],[GROUPING_END,']']]],
@@ -126,6 +126,10 @@ describe('Tokenizer: Misc', () => {
     ['trueish', [ [IDENTIFIER, 'trueish'] ]],
     ['a.trueish', [ [IDENTIFIER, 'a'],[INFIX_OP,'.'],[IDENTIFIER, 'trueish'] ]],
     ['trueish(3)', [[FUNCTION_CALL,'trueish'],[GROUPING_BEGIN,'('],[LITERAL,3],[GROUPING_END,')']]],
+    ['obj.constructor2', [[IDENTIFIER, 'obj'],[INFIX_OP, '.'],[IDENTIFIER, 'constructor2']]],
+    ['obj.toString', [[IDENTIFIER, 'obj'],[INFIX_OP, '.'],[IDENTIFIER, 'toString']]],
+    ['obj.__proto__', [[IDENTIFIER, 'obj'],[INFIX_OP, '.'],[IDENTIFIER, '__proto__']]],
+    ['obj.constructor', [[IDENTIFIER, 'obj'],[INFIX_OP, '.'],[IDENTIFIER, 'constructor']]],
   ];
 
   miscTests.forEach(arr => {
@@ -137,3 +141,13 @@ describe('Tokenizer: Misc', () => {
   });
 
 });
+
+/*
+describe('Tokenizer: Misc 2', () => {
+
+  it('obj.constructor is undefined', () => {
+    let e = new Expression('obj.constructor');
+    assert.equal(e.evaluate({obj:{a:1}}), undefined);
+  });
+})
+*/
