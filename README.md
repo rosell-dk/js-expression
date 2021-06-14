@@ -9,25 +9,40 @@ let e = new Expression('(1+1)*3');
 let result = e.evaluate();   // evaluates to 6
 ```
 
-Variables can be added like this:
+Variables can be passed to the evaluator like this:
 
 ```javascript
 let e = new Expression('shoeSize + 1');
-e.setVariable('shoeSize', 10);
-let result = e.evaluate();   // evaluates to 11
+e.setVariable();
+let result = e.evaluate({
+  'shoeSize': 10
+});   // evaluates to 11
 
-// Changing a variable does not trigger reparsing, just reevaluation:
-e.setVariable('shoeSize', 20);
-newResult = e.evaluate();    // now evaluates to 21
+// Reevaluating does not trigger reparsing
+let result2 = e.evaluate({
+  'shoeSize': 20
+});   // evaluates to 21
 ```
 
-Functions can be added like this:
+Functions can be passed in the same maner:
 
 ```javascript
 let e = new Expression('add(2,4)');
-e.addFunction('add', (a,b) => a+b);
-let result = e.evaluate();   // evaluates to 6
+let result = e.evaluate({
+    'add' => (a,b) => a+b
+});   // evaluates to 6
 ```
+
+Or alternatively, functions and constants can be set once and for all
+```javascript
+Expression.addFunction('substract', (a,b) => a-b);
+Expression.addConstant('PI', Math.PI);
+
+let e = new Expression('substract(PI,PI)');
+let result = e.evaluate();   // evaluates to 0
+```
+
+
 
 
 ## How it works
@@ -125,6 +140,8 @@ The following are not:
 - [fastparse](https://www.npmjs.com/package/fastparse)
 - [jsep](https://github.com/EricSmekens/jsep)
 - [expresssionparser](https://www.npmjs.com/package/expressionparser) - Its language is "formula", but new languages can be added. I actually tried adding javascript like this, but it turned out the machine wasn't flexible enough for things like object litterals, ternary operator and unary minus.
+- [calculon](https://www.npmjs.com/package/calculon)
+- [js-expr-runner](https://www.npmjs.com/package/js-expr-runner)
 
 ## Why did I create this?
 I needed something like this, but couldn't find exactly what I needed out there. And the challenge seemed like fun (and turned out to be). Had the basic engines running in three days and spent another three days implementing unary plus/minus, object/array literals, object accessors and the ternary operator.

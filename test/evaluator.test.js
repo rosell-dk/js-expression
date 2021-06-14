@@ -105,7 +105,7 @@ describe('Evaluator: Custom functions (passed in second argument)', () => {
 
     let tokens = Tokenizer.tokenize(s);
     let tokensRpn = Parser.parse(tokens);
-    let result = Evaluator.evaluate(tokensRpn, {'functions':functions});
+    let result = Evaluator.evaluate(tokensRpn, functions);
 
     it(s + ' => ' + JSON.stringify(expectedResult), () => {
       assert.deepEqual(result, expectedResult);
@@ -130,7 +130,7 @@ describe('Evaluator: Custom variables', () => {
 
     let tokens = Tokenizer.tokenize(s);
     let tokensRpn = Parser.parse(tokens);
-    let result = Evaluator.evaluate(tokensRpn, {'variables':variables});
+    let result = Evaluator.evaluate(tokensRpn, variables);
 
     it(s + ' => ' + JSON.stringify(expectedResult), () => {
       assert.deepEqual(result, expectedResult);
@@ -230,7 +230,7 @@ describe('Evaluator: property accessor', () => {
     let tokensRpn = Parser.parse(tokens);
     //console.log('rpn: ', tokensRpn);
 
-    let result = Evaluator.evaluate(tokensRpn, {'variables':variables});
+    let result = Evaluator.evaluate(tokensRpn, variables);
     it(s + ' => ' + JSON.stringify(expectedResult), () => {
       assert.deepEqual(result, expectedResult);
     });
@@ -292,7 +292,7 @@ describe('Evaluator: Misc', () => {
     let tokensRpn = Parser.parse(tokens);
     //console.log('rpn: ', tokensRpn);
 
-    let result = Evaluator.evaluate(tokensRpn, {'variables':variables});
+    let result = Evaluator.evaluate(tokensRpn, variables);
     it(s + ' => ' + JSON.stringify(expectedResult), () => {
       assert.deepEqual(result, expectedResult);
     });

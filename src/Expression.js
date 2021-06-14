@@ -29,6 +29,15 @@ export class Expression {
     this.rpn = Parser.parse(this.tokens);
   }
 
+  static addFunction(functionName, f) {
+    Evaluator.addFunction(functionName, f);
+  }
+
+  static addConstant(name, value) {
+    Evaluator.addConstant(name, value);
+  }
+
+/*
   addFunction(fname, fn) {
     this.extra.functions[fname] = fn;
   }
@@ -44,13 +53,13 @@ export class Expression {
   setVariables(variables) {
     this.extra.variables = variables;
   }
+*/
 
-
-  evaluate() {
+  evaluate(vars = {}) {
     if (this.rpn == null) {
       this.parse();
     }
-    return Evaluator.evaluate(this.rpn, this.extra);
+    return Evaluator.evaluate(this.rpn, vars);
   }
 
 }

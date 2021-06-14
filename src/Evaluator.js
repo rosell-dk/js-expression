@@ -67,18 +67,23 @@ export class Evaluator {
     Evaluator.functions[functionName] = f;
   }
 
+  static constants = {
+  }
+
+  // Add constant
+  static addConstant(name, value) {
+    Evaluator.constants[name] = value;
+  }
+
   /**
    *
-   * @param object extra  Supported keys: "functions" (obj) and "variables" (obj)
+   * @param object vars   Object of custom variables and functions
    */
-  static evaluate(rpnTokens, extra = {}) {
-    let functions = {}
-    Object.assign(functions, Evaluator.functions);
-    if (extra.hasOwnProperty('functions')) {
-      Object.assign(functions, extra.functions);
-    }
-
-    let variables = (extra.hasOwnProperty('variables') ? extra.variables : {});
+  static evaluate(rpnTokens, vars = {}) {
+    let v = {}
+    Object.assign(v, Evaluator.functions);
+    Object.assign(v, Evaluator.constants);
+    Object.assign(v, vars);
 
     //console.log('evaluateRpn', rpnTokens);
     //console.log('evaluateRpn', rpnTokens.map(function(a) {return a[1]}));
@@ -109,11 +114,11 @@ export class Evaluator {
           }
         }
         let variableName = token[1];
-        if (!variables.hasOwnProperty(variableName)) {
+        if (!v.hasOwnProperty(variableName)) {
           throw new Error('Variable is not defined: ' + variableName);
           //stack.push(new ObjectProp(variableName));
         } else {
-          stack.push(variables[variableName]);
+          stack.push(v[variableName]);
         }
       } else if (tokenType == GROUPING_BEGIN) {
         stack.push(token);  // Yes, push the whole token
@@ -159,11 +164,11 @@ export class Evaluator {
         }
       } else if (Tokenizer.isFunctionCall(token)) {
         let functionName = token[1];
-        if (!functions.hasOwnProperty(functionName)) {
+        if (!v.hasOwnProperty(functionName)) {
           throw new Error('Function does not exist: ' + functionName);
         }
         if (token[0] == FUNCTION_CALL_NO_ARGS) {
-          stack.push(functions[functionName]());
+          stack.push(v[functionName]());
         } else {
           let popped = stack.pop();
           let arr = [];
@@ -172,7 +177,7 @@ export class Evaluator {
           } else {
             arr.push(popped);
           }
-          stack.push(functions[functionName](... arr));
+          stack.push(v[functionName](... arr));
 
         }
       }
