@@ -29,6 +29,7 @@ e.addFunction('add', (a,b) => a+b);
 let result = e.evaluate();   // evaluates to 6
 ```
 
+
 ## How it works
 The library contains three engines: (*Tokenizer*, *Parser* and *Evaluator*), each in a class of its own, and the *Expression* class, which is for convenience.
 
@@ -120,7 +121,7 @@ The following are not:
 - [js-tokens](https://github.com/lydell/js-tokens#punctuator) - If you need complete tokenization and don't need parsing or evaluation.
 - [Javascript Calc Interpreter](https://www.npmjs.com/package/javascript-calc-interpreter) - If focus is on the math, not javascript
 - [safe-eval](https://www.npmjs.com/package/safe-eval) - If you only need to run it on node (or don't mind the huge node.vm module being packaged into your build)
-- [simple-expression-parsing](https://www.npmjs.com/package/simple-expression-parsing])
+- [simple-expression-parsing](https://www.npmjs.com/package/simple-expression-parsing)
 - [fastparse](https://www.npmjs.com/package/fastparse)
 - [jsep](https://github.com/EricSmekens/jsep)
 - [expresssionparser](https://www.npmjs.com/package/expressionparser) - Its language is "formula", but new languages can be added. I actually tried adding javascript like this, but it turned out the machine wasn't flexible enough for things like object litterals, ternary operator and unary minus.

@@ -1,20 +1,31 @@
 {
   "name": "js-expression",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "Parse and evaluate javascript expressions - no evil eval",
   "type": "module",
-  "directories": {
-    "test": "test"
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "exports": {
+    "import": "./dist/mjs/index.js",
+    "require": "./dist/cjs/index.js"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "build": "npm run build-cjs && npm run build-mjs",
+    "build-mjs": "webpack --mode production --config webpack.config-mjs.js",
+    "build-cjs": "webpack --mode production --config webpack.config-cjs.js && npm run copy-to-dist",
+    "copy-to-dist": "cp package-cjs.json dist/cjs/package.json"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rosell-dk/js-expression.git"
   },
-  "keywords": [],
+  "keywords": [
+    "parser",
+    "javascript",
+    "js",
+    "expressions"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -22,6 +33,8 @@
   },
   "homepage": "https://github.com/rosell-dk/js-expression#readme",
   "devDependencies": {
-    "mocha": "^9.0.0"
+    "mocha": "^9.0.0",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.2"
   }
 }
