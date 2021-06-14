@@ -9,31 +9,24 @@ let e = new Expression('(1+1)*3');
 let result = e.evaluate();   // evaluates to 6
 ```
 
-Variables can be passed to the evaluator like this:
+Variables and function can be passed like this:
 
 ```javascript
-let e = new Expression('shoeSize + 1');
-e.setVariable();
+let e = new Expression('add(shoeSize,1)');
 let result = e.evaluate({
-  'shoeSize': 10
+  'shoeSize': 10,
+  'add' => (a,b) => a+b
 });   // evaluates to 11
+```
 
-// Reevaluating does not trigger reparsing
+Btw: reevaluating does not trigger reparsing.
+```
 let result2 = e.evaluate({
   'shoeSize': 20
-});   // evaluates to 21
+});   // Now evaluates to 21. And more quickly than before, as the expression has already been parsed
 ```
 
-Functions can be passed in the same maner:
-
-```javascript
-let e = new Expression('add(2,4)');
-let result = e.evaluate({
-    'add' => (a,b) => a+b
-});   // evaluates to 6
-```
-
-Or alternatively, functions and constants can be set once and for all
+Alternatively, functions and constants can be set once and for all like this:
 ```javascript
 Expression.addFunction('substract', (a,b) => a-b);
 Expression.addConstant('PI', Math.PI);
@@ -41,9 +34,6 @@ Expression.addConstant('PI', Math.PI);
 let e = new Expression('substract(PI,PI)');
 let result = e.evaluate();   // evaluates to 0
 ```
-
-
-
 
 ## How it works
 The library contains three engines: (*Tokenizer*, *Parser* and *Evaluator*), each in a class of its own, and the *Expression* class, which is for convenience.
