@@ -34,31 +34,13 @@ export class JsExpression {
 
   static staticVars = [];
 
-  static addFunction(functionName, f) {
+  static setFunction(functionName, f) {
     JsExpression.staticVars[functionName] = f;
   }
 
-  static addConstant(name, value) {
+  static setVariable(name, value) {
     JsExpression.staticVars[name] = value;
   }
-
-/*
-  addFunction(fname, fn) {
-    this.extra.functions[fname] = fn;
-  }
-
-  setFunctions(functions) {
-    this.extra.functions = functions;
-  }
-
-  setVariable(varName, value) {
-    this.extra.variables[varName] = value;
-  }
-
-  setVariables(variables) {
-    this.extra.variables = variables;
-  }
-*/
 
   evaluate(vars = {}) {
     let v = {};

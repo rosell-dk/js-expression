@@ -31,8 +31,8 @@ let result2 = e.evaluate({
 
 Functions and constants can be set once and for all like this:
 ```javascript
-Expression.addFunction('substract', (a,b) => a-b);
-Expression.addConstant('PI', Math.PI);
+Expression.setFunction('substract', (a,b) => a-b);
+Expression.setVariable('PI', Math.PI);
 
 let e = new JsExpression('substract(PI,PI)');
 let result = e.evaluate();   // evaluates to 0
@@ -46,7 +46,7 @@ console.log(new JsExpression('window').evaluate());
 console.log(new JsExpression('global').evaluate());
 // undefined
 
-Expression.addConstant('myString', 'hello');
+Expression.setVariable('myString', 'hello');
 new JsExpression('myString.toString()').evaluate());
 // throws "Function does not exist: toString"
 ```
@@ -62,14 +62,17 @@ let rpnTokenValues = rpnTokens.map(function(a) {return a[1]});    // result: [1,
 
 ## Node.JS
 First run `npm i @rosell/js-expression`. Then:
-```
+```javascript
 // ESM:
 import { JsExpression } from '@rosell/js-expression';
+
+// ESM, alternative
+import JsExpression from '@rosell/js-expression';
 
 // CJS:
 const { JsExpression } = require('@rosell/js-expression');
 ```
-(You can also import *Tokenizer*, *Evaluator* and *Parser* like this, if you need those)
+(You can also import *Tokenizer*, *Evaluator* and *Parser*, if you need those)
 
 ## How it works
 The library contains three engines: (*Tokenizer*, *Parser* and *Evaluator*), each in a class of its own, and the *Expression* class, which is for convenience.

@@ -100,7 +100,7 @@ describe('Adding function', () => {
   vars['tripple'] = (n) => n.toString() + n.toString() + n.toString()
 
   let e2 = new JsExpression();
-  //e2.addFunction('tripple', (n) => n*3);
+  //e2.setFunction('tripple', (n) => n*3);
 
   e2.setExpression('tripple(2)');
 
@@ -110,7 +110,7 @@ describe('Adding function', () => {
 
   /*
   let e = new JsExpression('tripple(2)');
-  e.addFunction('tripple', (n) => n*3)
+  e.setFunction('tripple', (n) => n*3)
   let firstResult = e.evaluate();
 
   // redefine expression (toggles reparse)
@@ -125,7 +125,7 @@ describe('Adding function', () => {
   });
 
   let e2 = new JsExpression();
-  e2.addFunction('tripple', (n) => n*3);
+  e2.setFunction('tripple', (n) => n*3);
   e2.setExpression('tripple(2)');
   e2.evaluate();
   e2.setFunctions(
@@ -140,7 +140,7 @@ describe('Adding function', () => {
 
 
 describe('Adding function "permanently"', () => {
-  JsExpression.addFunction("double", (n) => n*2);
+  JsExpression.setFunction("double", (n) => n*2);
 
   it('double(5) evaluates to 10', () => {
     let e = new JsExpression('double(5)');
@@ -151,7 +151,7 @@ describe('Adding function "permanently"', () => {
 
 
 describe('Adding constant', () => {
-  JsExpression.addConstant("PI", Math.PI);
+  JsExpression.setVariable("PI", Math.PI);
 
   it('PI equals PI', () => {
     let e = new JsExpression('PI');
@@ -179,11 +179,11 @@ describe('parse()', () => {
 
 describe('Evaluator: Custom functions ("permanent" functions)', () => {
 
-  JsExpression.addFunction('equals', (a, b) => (a==b));
-  JsExpression.addFunction('double', (a) => a*2);
-  JsExpression.addFunction('seven', () => 7);
-  JsExpression.addFunction('gt', (a,b) => (a>b));
-  JsExpression.addFunction('add', (a,b) => (a+b));
+  JsExpression.setFunction('equals', (a, b) => (a==b));
+  JsExpression.setFunction('double', (a) => a*2);
+  JsExpression.setFunction('seven', () => 7);
+  JsExpression.setFunction('gt', (a,b) => (a>b));
+  JsExpression.setFunction('add', (a,b) => (a+b));
 
   let tests = [
     ['equals(1,3)', false],
@@ -232,7 +232,7 @@ describe('security', () => {
     assert.equal(e.evaluate(), undefined);
   });
 
-  //Expression.addConstant("obj", {a: 'h'});
+  //Expression.setVariable("obj", {a: 'h'});
   it('typeof obj.constructor is "function"', () => {
     let e = new JsExpression('typeof obj.constructor');
     assert.equal(e.evaluate({obj:{a:1}}), 'function');
@@ -240,7 +240,7 @@ describe('security', () => {
 
   /*
   TODO: catch error
-  JsExpression.addConstant("s", "hello");
+  JsExpression.setVariable("s", "hello");
   it('Executing methods is disallowed.', () => {
     let e = new JsExpression('s.toString()');
     assert.equal(e.evaluate(), 'function');
