@@ -6,9 +6,10 @@ Includes a tokenizer, a parser and an evaluator.
 
 ## Usage:
 
-Installing (NodeJS): `npm i @rosell/js-expression`.
-
-(You can also import *Tokenizer*, *Evaluator* and *Parser*, if you need those)
+Installing:
+```
+npm i @rosell/js-expression
+```
 
 ```javascript
 import { JsExpression } from '@rosell/js-expression';
