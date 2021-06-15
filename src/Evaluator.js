@@ -58,12 +58,36 @@ export class Evaluator {
     'void': (a) => void a,
   };
 
+  static contexts = {}
 
   /**
    *
-   * @param object vars   Object of custom variables and functions
+   * @param object context   Object of custom variables and functions
+   * @param id     string    Id of context
    */
-  static evaluate(rpnTokens, vars = {}) {
+  static setGlobalContext(context, id = 'global') {
+    Evaluator.contexts[id] = context;
+  }
+
+  static getVariable(variableName, localContext, globalContextId = null) {
+    if (localContext.hasOwnProperty(variableName)) {
+      return localContext[variableName];
+    }
+    if (
+      (globalContextId != null) &&
+      (Evaluator.contexts.hasOwnProperty(globalContextId)) &&
+      (Evaluator.contexts[globalContextId].hasOwnProperty(variableName))
+    ) {
+      return Evaluator.contexts[globalContextId][variableName];
+    }
+    return undefined;
+  }
+
+  /**
+   *
+   * @param object localContext   Object of custom variables and functions
+   */
+  static evaluate(rpnTokens, localContext = {}, globalContextId = null) {
 
     //console.log('evaluateRpn', rpnTokens);
     //console.log('evaluateRpn', rpnTokens.map(function(a) {return a[1]}));
@@ -94,13 +118,7 @@ export class Evaluator {
           }
         }
         let variableName = token[1];
-        if (!vars.hasOwnProperty(variableName)) {
-          //throw new Error('Variable is not defined: ' + variableName);
-          stack.push(undefined);
-          //stack.push(new ObjectProp(variableName));
-        } else {
-          stack.push(vars[variableName]);
-        }
+        stack.push(Evaluator.getVariable(variableName, localContext, globalContextId));
       } else if (tokenType == GROUPING_BEGIN) {
         stack.push(token);  // Yes, push the whole token
       } else if (tokenType == GROUPING_END) {
@@ -145,11 +163,12 @@ export class Evaluator {
         }
       } else if (Tokenizer.isFunctionCall(token)) {
         let functionName = token[1];
-        if (!vars.hasOwnProperty(functionName)) {
+        let f = Evaluator.getVariable(functionName, localContext, globalContextId);
+        if (f == undefined) {
           throw new Error('Function does not exist: ' + functionName);
         }
         if (token[0] == FUNCTION_CALL_NO_ARGS) {
-          stack.push(vars[functionName]());
+          stack.push(f());
         } else {
           let popped = stack.pop();
           let arr = [];
@@ -158,8 +177,7 @@ export class Evaluator {
           } else {
             arr.push(popped);
           }
-          stack.push(vars[functionName](... arr));
-
+          stack.push(f(... arr));
         }
       }
     }

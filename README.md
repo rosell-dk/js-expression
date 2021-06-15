@@ -23,31 +23,51 @@ let e = new JsExpression('(1+1)*3');
 let result = e.evaluate();   // evaluates to 6
 ```
 
-Variables and function can be passed like this:
+Context (variables and functions) can be set like this:
 
 ```javascript
 let e = new JsExpression('add(shoeSize,1)');
-let result = e.evaluate({
+let localContext = {
   'shoeSize': 10,
   'add' => (a,b) => a+b
-});   // evaluates to 11
+}
+e.setLocalContext(localContext);
+let result = e.evaluate();   // evaluates to 11
 ```
 
-Revaluating is cheap as it does not trigger reparsing.
+Revaluating is cheap, as there is no need for reparsing.
 ```javascript
-let result2 = e.evaluate({
-  'shoeSize': 20,
-  'add' => (a,b) => a+b
-});   // Now evaluates to 21. And more quickly than before, as the expression has already been parsed
+localContext['shoeSize'] = 20;
+let result2 = e.evaluate(localContext);   // Now evaluates to 21
 ```
 
-Functions and constants can be set once and for all like this:
+If you have several evaluations that are to run in the same context, you set a global context like this:
+
 ```javascript
-Expression.setFunction('substract', (a,b) => a-b);
-Expression.setVariable('PI', Math.PI);
+let globalContext = {
+  'substract', (a,b) => a-b),
+  'PI', Math.PI
+}
+JsExpression.setGlobalContext(globalContext);
 
 let e = new JsExpression('substract(PI,PI)');
 let result = e.evaluate();   // evaluates to 0
+```
+
+
+If you provide a name for the global context, you can easily switch:
+```javascript
+let sweden = {
+  lang: 'swedish'
+}
+let denmark = {
+  lang: 'danish'
+}
+JsExpression.setGlobalContext(sweden, 'se');
+JsExpression.setGlobalContext(denmark, 'dk');
+let e = new JsExpression("'they speak: ' + lang");
+e.evaluate('se')    // evaluates to "they speak swedish"
+e.evaluate('dk')    // evaluates to "they speak danish"
 ```
 
 Security:
@@ -58,12 +78,12 @@ console.log(new JsExpression('window').evaluate());
 console.log(new JsExpression('global').evaluate());
 // undefined
 
-Expression.setVariable('myString', 'hello');
+JsExpression.setGlobalContext({'myString': 'hello'});
 new JsExpression('myString.toString()').evaluate());
 // throws "Function does not exist: toString"
 ```
 
-To only tokenize or parse, use `tokenize()` and `parse()`. Example:
+To only tokenize or parse, use the `tokenize()` and `parse()` methods. Example:
 ```javascript
 let e = new JsExpression('1+2');
 let tokens = e.tokenize();  // tokens: [[LITERAL, '1'], [INFIX_OP, '+'], [LITERAL, '2']]
@@ -73,7 +93,7 @@ let rpnTokenValues = rpnTokens.map(function(a) {return a[1]});    // result: [1,
 ```
 
 ## How it works
-The library contains three engines: (*Tokenizer*, *Parser* and *Evaluator*), each in a class of its own, and the *Expression* class, which is for convenience.
+The library contains three engines: (*Tokenizer*, *Parser* and *Evaluator*), each in a class of its own, and the *JsExpression* class, which is for convenience.
 
 ### Tokenizer
 Converts a string to tokens. A token consists of type information and value.

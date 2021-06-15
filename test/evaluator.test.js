@@ -56,7 +56,7 @@ describe('Evaluator: Basic evaluation', () => {
   });
 });
 
-describe('Evaluator: Custom functions (passed in second argument)', () => {
+describe('Evaluator: functions in local scope', () => {
 
   let functions = {
     'hello': () => 'world'
@@ -79,7 +79,7 @@ describe('Evaluator: Custom functions (passed in second argument)', () => {
   });
 });
 
-describe('Evaluator: Custom variables', () => {
+describe('Evaluator: variables in local scope', () => {
 
   let variables = {
     'imageType': 'png',
@@ -102,6 +102,48 @@ describe('Evaluator: Custom variables', () => {
       assert.deepEqual(result, expectedResult);
     });
   });
+});
+
+describe('Evaluator: Unnamed global context', () => {
+
+  let globalContext = {
+    'name': 'dan',
+  };
+  Evaluator.setGlobalContext(globalContext);
+
+  let tests = [
+    ['name', 'dan'],
+    //['nonExist==true']
+  ];
+
+  tests.forEach(arr => {
+    let s = arr[0];
+    let expectedResult = arr[1];
+
+    let tokens = Tokenizer.tokenize(s);
+    let tokensRpn = Parser.parse(tokens);
+    let result = Evaluator.evaluate(tokensRpn, {}, 'global');
+
+    it(s + ' => ' + JSON.stringify(expectedResult), () => {
+      assert.deepEqual(result, expectedResult);
+    });
+  });
+
+  let newGlobalContext = {
+    'name': 'svea',
+  };
+  Evaluator.setGlobalContext(newGlobalContext, 'sweden');
+
+  let tokens = Tokenizer.tokenize('name');
+  let tokensRpn = Parser.parse(tokens);
+  let result = Evaluator.evaluate(tokensRpn, {}, 'sweden');
+  let expectedResult = 'svea';
+
+  it('name' + ' => ' + JSON.stringify(expectedResult), () => {
+    assert.deepEqual(result, expectedResult);
+  });
+
+
 });
 
 describe('Evaluator: Array constructor', () => {

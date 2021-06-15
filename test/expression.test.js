@@ -56,13 +56,17 @@ describe('Adding custom variables', () => {
   */
 });
 
-/*
+
 describe('Changing variable', () => {
 
+  let context = {
+    'shoeSize': 10
+  }
   let e = new JsExpression('shoeSize');
-  e.setVariable('shoeSize', 10);
+  e.setLocalContext(context);
   let result1 = e.evaluate();
-  e.setVariable('shoeSize', 12);
+
+  context.shoeSize = 12
   let result2 = e.evaluate();
 
   it('"shoeSize" evaluates to 10, after setting the variable', () => {
@@ -73,7 +77,7 @@ describe('Changing variable', () => {
   });
 
 });
-*/
+
 
 describe('Adding function', () => {
   let vars = {
@@ -139,25 +143,43 @@ describe('Adding function', () => {
 });
 
 
-describe('Adding function "permanently"', () => {
-  JsExpression.setFunction("double", (n) => n*2);
+describe('Global context', () => {
+  let globalContext = {
+    "double": (n) => n*2,
+    "PI": Math.PI
+  }
+  JsExpression.setGlobalContext(globalContext);
 
   it('double(5) evaluates to 10', () => {
     let e = new JsExpression('double(5)');
     assert.equal(e.evaluate(), 10);
   });
 
-});
-
-
-describe('Adding constant', () => {
-  JsExpression.setVariable("PI", Math.PI);
-
   it('PI equals PI', () => {
     let e = new JsExpression('PI');
     assert.equal(e.evaluate(), Math.PI);
   });
+
+  let sweden = {
+    lang: 'swedish'
+  }
+  let denmark = {
+    lang: 'danish'
+  }
+  JsExpression.setGlobalContext(sweden, 'se');
+  JsExpression.setGlobalContext(denmark, 'dk');
+  let e = new JsExpression("'they speak: ' + lang");
+
+  it('They speak swedish in sweden context', () => {
+    assert.equal(e.evaluate('se'), 'they speak: swedish');
+  });
+  it('They speak danish in denmark context', () => {
+    assert.equal(e.evaluate('dk'), 'they speak: danish');
+  });
+
 });
+
+
 
 describe('tokenize()', () => {
   it('e.tokenize() returns tokens', () => {
@@ -177,6 +199,7 @@ describe('parse()', () => {
   });
 });
 
+/*
 describe('Evaluator: Custom functions ("permanent" functions)', () => {
 
   JsExpression.setFunction('equals', (a, b) => (a==b));
@@ -210,7 +233,7 @@ describe('Evaluator: Custom functions ("permanent" functions)', () => {
       assert.deepEqual(result, expectedResult);
     });
   });
-});
+});*/
 
 describe('security', () => {
   it('window is undefined', () => {

@@ -14,41 +14,46 @@ export class JsExpression {
 
   setExpression(expression = '') {
     this.expression = expression;
-    this.tokens = null;
-    this.rpn = null;
+    this.tokens = undefined;
+    this.rpn = undefined;
   }
 
   tokenize() {
-    if (this.tokens == null) {
+    if (this.tokens == undefined) {
       this.tokens = Tokenizer.tokenize(this.expression);
     }
     return this.tokens;
   }
 
   parse() {
-    if (this.rpn == null) {
+    if (this.rpn == undefined) {
       this.rpn = Parser.parse(this.tokenize());
     }
     return this.rpn;
   }
 
-  static staticVars = [];
-
-  static setFunction(functionName, f) {
-    JsExpression.staticVars[functionName] = f;
+  setLocalContext(context) {
+    this.localContext = context;
   }
 
-  static setVariable(name, value) {
-    JsExpression.staticVars[name] = value;
+  static setGlobalContext(context, id='global') {
+    Evaluator.setGlobalContext(context, id);
   }
 
-  evaluate(vars = {}) {
-    let v = {};
-    Object.assign(v, JsExpression.staticVars);
-    Object.assign(v, vars);
+  evaluate(context, globalContextId = undefined) {
 
-
-    return Evaluator.evaluate(this.parse(), v);
+    if (context !== undefined) {
+      if (typeof context == 'string') {
+        // global context id
+        globalContextId = context;
+      } else {
+        this.setLocalContext(context);
+      }
+    }
+    if ((globalContextId == undefined) && (Evaluator.contexts.hasOwnProperty('global'))) {
+      globalContextId = 'global';
+    }
+    return Evaluator.evaluate(this.parse(), this.localContext, globalContextId);
   }
 
 }

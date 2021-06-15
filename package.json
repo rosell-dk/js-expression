@@ -1,7 +1,7 @@
 {
   "name": "@rosell/js-expression",
-  "version": "0.2.0",
-  "description": "Parse and evaluate javascript expressions - no evil eval",
+  "version": "0.3.0",
+  "description": "Evaluate javascript expressions. No eval. No dependencies. Only 6kb.",
   "type": "module",
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
