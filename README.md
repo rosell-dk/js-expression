@@ -148,10 +148,10 @@ Pulls it all together. It takes care of parsing before evaluating and makes sure
 
 ### Operators
 The following operators are supported:  
-`,`, `?`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`, `typeof`, `void`, `.`
+`,`, `?`, `??`, `||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `===`, `<`, `>`, `<=`, `>=`, `>>`, `<<`, `>>>`, `+`, `-`, `*`, `/`, `%`, `**`, `!`, `~`, `typeof`, `void`, `.`, `?.`
 
 The following are not:  
-`yield`, `new`, `?.` and operators that makes assignments (=, ++, --, etc)
+`yield`, `new`, and operators that makes assignments (=, ++, --, etc)
 `in` and `instanceof` (forgot about those - will be added monday)
 
 

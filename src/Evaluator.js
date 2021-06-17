@@ -55,6 +55,7 @@ export class Evaluator {
     '+/+': (a) => a,
     'typeof': (a) => typeof a,
     '.': (a, b) => a[b],
+    '?.': (a, b) => ((a === null) || (a === undefined) ? undefined : a[b]),
     'void': (a) => void a,
   };
 
@@ -112,7 +113,7 @@ export class Evaluator {
       } else if (token[0] == IDENTIFIER) {
         if (i<rpnTokens.length-1) {
           let nextToken = rpnTokens[i+1];
-          if (nextToken[1] == '.') {    // Property accessor
+          if ((nextToken[1] == '.') || (nextToken[1] == '?.')) {    // Property accessor
             stack.push(token[1]);
             continue;
           }

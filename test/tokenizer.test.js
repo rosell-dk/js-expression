@@ -42,7 +42,7 @@ describe('Tokenizer: Operators (prefix)', () => {
 describe('Tokenizer: Operators (infix)', () => {
   let infixTests = [
     ',', '??', '||', '&&', '|', '^', '&', '==', '!=', '===', '<', '>', '<=', '>=', '>>',
-    '<<', '>>>', '*', '/', '%', '**', '?', ':'
+    '<<', '>>>', '*', '/', '%', '**', '?', ':', '?.'
   ];
   infixTests.forEach(op => {
     it(op + ' is an infix operator', () => {

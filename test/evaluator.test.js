@@ -39,6 +39,7 @@ describe('Evaluator: Basic evaluation', () => {
     ['~!false', -2],   // both are right associative. ~!false => ~true => -2
     ['2+-1', 1],
     ['void 1', undefined],
+    ['({a:1})?.a', 1],
     //['void 0', 'number'],   // We removed void
   ];
 
@@ -228,6 +229,13 @@ describe('Evaluator: property accessor', () => {
     ['obj["co" + "lor"]', "green"],
     ['arr[obj2["one"]["two"]-1]', 'two'],
     //['obj3.one["two"].three', 'abc'],   // TODO!
+
+    ['obj.color', 'green'],
+    ['obj?.color', 'green'],
+    ['notexistingObject?.color', undefined],
+    ['null?.color', undefined],
+    ['undefined?.color', undefined],
+    ['obj?.color22', undefined],
   ];
 
   tests.forEach(arr => {
@@ -244,7 +252,6 @@ describe('Evaluator: property accessor', () => {
     });
   });
 });
-
 
 describe('Evaluator: ternary operator', () => {
 

@@ -19,7 +19,7 @@ export class Parser {
     ['*', '/', '%'],
     '**',
     ['!', '~', '+/-', '+/+', 'typeof', 'void'],
-    '.'
+    ['.', '?.']
   ];
 
   static getPrecedence(token) {
