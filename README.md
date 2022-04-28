@@ -191,7 +191,7 @@ The following are not:
 - [js-expr-runner](https://www.npmjs.com/package/js-expr-runner). Depends on lodash
 
 ## Why did I create this?
-I needed something like this, but couldn't find exactly what I needed out there. And the challenge seemed like fun (and turned out to be). Had the basic engines running in three days and spent another three days implementing unary plus/minus, object/array literals, object accessors and the ternary operator.
+I needed something like this, but couldn't find exactly what I needed out there. And the challenge seemed like fun (and turned out to be). Had the basic engines running after three days and spent another three days implementing unary plus/minus, object/array literals, object accessors and the ternary operator.
 
 ## Do you like what I do?
 Perhaps you want to support my work, so I can continue doing it :)
