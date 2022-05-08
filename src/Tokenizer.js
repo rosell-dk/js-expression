@@ -50,10 +50,10 @@ export class Tokenizer {
       // function call without arguments
       // TODO: Functions should be tokenized as identifier and handled in Parser and Evaluator much the same way that
       // dynamic properies, such as obj['name'] are now.
-      [FUNCTION_CALL_NO_ARGS, /^([a-zA-Z_$][a-zA-Z_$1-9]*)\(\s*\)/],
+      [FUNCTION_CALL_NO_ARGS, /^([a-zA-Z_$][a-zA-Z_$0-9]*)\(\s*\)/],
 
       // function call
-      [FUNCTION_CALL, /^([a-zA-Z_$][a-zA-Z_$1-9]*)(\()/],
+      [FUNCTION_CALL, /^([a-zA-Z_$][a-zA-Z_$0-9]*)(\()/],
 
       // infix operator
       // +, -, *, /, %, &, |, ^, !, &&, ||, =, !=, ==, !==, ===, >, <, >=, >=, **, ??, ?, <<, >>, >>>, :, ~, ., .? and comma (,)
@@ -73,7 +73,7 @@ export class Tokenizer {
       [LITERAL, /^"((?:(\\")|[^"])*)"/],
 
       // variable  (acually, identifier - https://developer.mozilla.org/en-US/docs/Glossary/Identifier)
-      [IDENTIFIER, /^([a-zA-Z_$][a-zA-Z_$1-9]*)/],
+      [IDENTIFIER, /^([a-zA-Z_$][a-zA-Z_$0-9]*)/],
 
       // Group begin - (left pare / left bracket / left curly bracket)
       [GROUPING_BEGIN, /^([\(\[\{])/],
